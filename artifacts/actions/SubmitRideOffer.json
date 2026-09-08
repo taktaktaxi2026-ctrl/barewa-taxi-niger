@@ -1,0 +1,80 @@
+{
+  "name": "SubmitRideOffer",
+  "type": "code",
+  "description": "Enregistre une offre ou une contre-offre de prix sur une course en cours de négociation. Marque l'offre précédente du même camp comme Dépassée, crée la nouvelle ligne dans RideOffers avec le montant précédent pour affichage de l'écart, et passe la course en négociation. Refuse un montant absurde : en dessous du prix plancher de la ville ou au-delà du triple du prix calculé.",
+  "iconName": "handshake",
+  "exposedToUI": true,
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "rideId",
+      "side",
+      "amount"
+    ],
+    "properties": {
+      "rideId": {
+        "type": "number",
+        "description": "Course sur laquelle porte la négociation"
+      },
+      "side": {
+        "type": "string",
+        "description": "Qui émet l'offre : Passager ou Chauffeur",
+        "enum": [
+          "Passager",
+          "Chauffeur"
+        ]
+      },
+      "amount": {
+        "type": "number",
+        "description": "Prix proposé en FCFA"
+      },
+      "driverId": {
+        "type": "number",
+        "description": "Chauffeur concerné : celui qui contre-propose, ou celui à qui le passager s'adresse"
+      },
+      "reason": {
+        "type": "string",
+        "description": "Justification de l'écart (embouteillage, pluie, retour à vide, course de nuit)"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "success"
+    ],
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "message": {
+        "type": "string",
+        "description": "Message à afficher, notamment en cas de refus du montant"
+      },
+      "offerId": {
+        "type": "number"
+      },
+      "amount": {
+        "type": "number"
+      },
+      "previousAmount": {
+        "type": "number",
+        "description": "Montant de l'offre précédente, pour afficher l'écart"
+      },
+      "deltaAmount": {
+        "type": "number",
+        "description": "Écart signé en FCFA avec l'offre précédente"
+      },
+      "calculatedFare": {
+        "type": "number",
+        "description": "Prix calculé par la grille tarifaire, pour référence"
+      },
+      "roundNumber": {
+        "type": "number",
+        "description": "Numéro du tour de négociation"
+      }
+    }
+  },
+  "secrets": [],
+  "usageDescription": "This action is triggered by:\n\n- **A passenger haggling over the price**: the \"+100 FCFA\", \"+200 FCFA\" and \"Envoyer\" buttons in the price-negotiation panel of the \"En cours\" tab\n- **A driver countering a price**: the \"Contre-proposer\" button on an incoming request in the driver \"Courses\" tab, then \"Envoyer ma contre-offre\" in the keypad window\n- **The ride simulator**: the sandbox opened from the game-pad button in the top bar plays a passenger offer and a driver counter-offer end to end\n  Each press records the new price so the other party can accept it or answer with their own."
+}

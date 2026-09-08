@@ -1,0 +1,66 @@
+{
+  "name": "AcceptRideOffer",
+  "type": "code",
+  "description": "Clôt la négociation d'une course en acceptant une offre. Passe l'offre à Acceptée, refuse les offres encore en attente, écrit le prix convenu sur la course (estimatedFare) avec la ventilation commission plateforme et net chauffeur recalculée, passe la course en Prix accepté, et — si c'est le chauffeur qui accepte l'offre du passager — affecte ce chauffeur à la course et la fait passer au statut Acceptée.",
+  "iconName": "check-check",
+  "exposedToUI": true,
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "offerId",
+      "acceptedBy"
+    ],
+    "properties": {
+      "offerId": {
+        "type": "number",
+        "description": "Offre acceptée"
+      },
+      "acceptedBy": {
+        "type": "string",
+        "description": "Qui accepte l'offre ; doit être le camp opposé à celui qui l'a émise",
+        "enum": [
+          "Passager",
+          "Chauffeur"
+        ]
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "success"
+    ],
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "message": {
+        "type": "string",
+        "description": "Message à afficher aux deux parties"
+      },
+      "rideId": {
+        "type": "number"
+      },
+      "agreedFare": {
+        "type": "number",
+        "description": "Prix définitivement convenu en FCFA"
+      },
+      "platformCommission": {
+        "type": "number"
+      },
+      "driverPayout": {
+        "type": "number"
+      },
+      "driverId": {
+        "type": "number",
+        "description": "Chauffeur affecté à la course à l'issue de l'accord"
+      },
+      "rideStatus": {
+        "type": "string",
+        "description": "Nouveau statut de la course"
+      }
+    }
+  },
+  "secrets": [],
+  "usageDescription": "This action is triggered by:\n\n- **Either party closing the haggling**: the \"Accepter <price>\" button in the price-negotiation panel, shown to the passenger in the \"En cours\" tab and to the driver in the \"Courses\" tab\n- **The ride simulator**: the sandbox accepts the driver's counter-offer on behalf of the passenger\n  It locks the agreed price on the ride and assigns the driver when the driver is the one who accepts."
+}

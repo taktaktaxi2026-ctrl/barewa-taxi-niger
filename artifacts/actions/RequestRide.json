@@ -1,0 +1,161 @@
+{
+  "name": "RequestRide",
+  "type": "code",
+  "description": "Commande une course. Vérifie que la ville est ouverte au service, calcule et verrouille le prix en FCFA via la même logique que EstimateRideFare (distance, durée, grille tarifaire, majorations, code promotionnel), génère une référence de course courte, insère la ligne dans Rides au statut Recherche, consomme l'utilisation du code promotionnel, et renvoie la liste des chauffeurs disponibles à solliciter. Refuse la commande si le passager a déjà une course en cours.",
+  "iconName": "car-taxi-front",
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "passengerId",
+      "cityId",
+      "vehicleTypeId",
+      "pickupLabel",
+      "pickupLatitude",
+      "pickupLongitude",
+      "dropoffLabel",
+      "dropoffLatitude",
+      "dropoffLongitude",
+      "paymentProviderId"
+    ],
+    "properties": {
+      "passengerId": {
+        "type": "number",
+        "description": "Identifiant du profil passager qui commande"
+      },
+      "cityId": {
+        "type": "number",
+        "description": "Ville de la course"
+      },
+      "vehicleTypeId": {
+        "type": "number",
+        "description": "Type de véhicule demandé"
+      },
+      "pickupLabel": {
+        "type": "string",
+        "description": "Libellé du point de départ montré au chauffeur"
+      },
+      "pickupLatitude": {
+        "type": "number",
+        "description": "Latitude du départ"
+      },
+      "pickupLongitude": {
+        "type": "number",
+        "description": "Longitude du départ"
+      },
+      "pickupLandmarkId": {
+        "type": "number",
+        "description": "Repère de départ choisi dans le référentiel, s'il y en a un"
+      },
+      "dropoffLabel": {
+        "type": "string",
+        "description": "Libellé du point d'arrivée montré au chauffeur"
+      },
+      "dropoffLatitude": {
+        "type": "number",
+        "description": "Latitude de l'arrivée"
+      },
+      "dropoffLongitude": {
+        "type": "number",
+        "description": "Longitude de l'arrivée"
+      },
+      "dropoffLandmarkId": {
+        "type": "number",
+        "description": "Repère d'arrivée choisi dans le référentiel, s'il y en a un"
+      },
+      "paymentProviderId": {
+        "type": "number",
+        "description": "Moyen de paiement retenu par le passager"
+      },
+      "promoCode": {
+        "type": "string",
+        "description": "Code promotionnel à appliquer sur cette course"
+      },
+      "passengerNote": {
+        "type": "string",
+        "description": "Consigne du passager pour retrouver le point de rendez-vous"
+      },
+      "passengerCount": {
+        "type": "number",
+        "description": "Nombre de passagers",
+        "default": 1
+      },
+      "isScheduled": {
+        "type": "boolean",
+        "description": "La course est-elle réservée pour plus tard",
+        "default": false
+      },
+      "scheduledFor": {
+        "type": "string",
+        "description": "Date et heure de prise en charge souhaitée, au format ISO 8601, pour une course réservée"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "success"
+    ],
+    "properties": {
+      "success": {
+        "type": "boolean",
+        "description": "La course a-t-elle été créée"
+      },
+      "message": {
+        "type": "string",
+        "description": "Message à afficher au passager, notamment en cas de refus"
+      },
+      "rideId": {
+        "type": "number",
+        "description": "Identifiant de la course créée"
+      },
+      "reference": {
+        "type": "string",
+        "description": "Référence courte de la course"
+      },
+      "estimatedFare": {
+        "type": "number",
+        "description": "Prix verrouillé en FCFA"
+      },
+      "discountAmount": {
+        "type": "number",
+        "description": "Remise appliquée en FCFA"
+      },
+      "distanceKm": {
+        "type": "number"
+      },
+      "durationMin": {
+        "type": "number"
+      },
+      "surgeApplied": {
+        "type": "number",
+        "description": "Majoration totale appliquée en pourcentage"
+      },
+      "candidateDrivers": {
+        "type": "array",
+        "description": "Chauffeurs disponibles à solliciter pour cette course, du plus proche au plus éloigné",
+        "items": {
+          "type": "object",
+          "properties": {
+            "driverId": {
+              "type": "number"
+            },
+            "fullName": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "distanceKm": {
+              "type": "number"
+            },
+            "etaMin": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "exposedToUI": true,
+  "usageDescription": "This action is triggered by:\n\n- **A passenger ordering a ride**: tap on the big \"Commander la course\" button at the bottom of the \"Commander\" screen, once the city, pickup, destination, vehicle and payment method are chosen\n  It books the ride, locks the price in FCFA, gives it a short reference, and opens the live tracking screen."
+}

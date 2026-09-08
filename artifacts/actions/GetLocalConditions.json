@@ -1,0 +1,150 @@
+{
+  "name": "GetLocalConditions",
+  "type": "code",
+  "description": "Renvoie la météo du jour et les cinq horaires de prière pour une ville du Niger. Interroge Open-Meteo (service public gratuit, sans clé) pour la température, le vent, les rafales de poussière et l'indice UV, et calcule les horaires de prière (Fajr, Dhuhr, Asr, Maghrib, Isha) par la méthode astronomique standard aux coordonnées de la ville, en heure locale du Niger (UTC+1). Alimente la bannière d'accueil du passager.",
+  "iconName": "sun",
+  "exposedToUI": true,
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "latitude",
+      "longitude"
+    ],
+    "properties": {
+      "latitude": {
+        "type": "number",
+        "description": "Latitude de la ville ou de la position du passager"
+      },
+      "longitude": {
+        "type": "number",
+        "description": "Longitude de la ville ou de la position du passager"
+      },
+      "cityName": {
+        "type": "string",
+        "description": "Nom de la ville, repris tel quel dans la réponse pour l'affichage"
+      },
+      "date": {
+        "type": "string",
+        "description": "Jour souhaité au format AAAA-MM-JJ ; omis, le jour courant au Niger est utilisé"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "success"
+    ],
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "message": {
+        "type": "string",
+        "description": "Message d'explication si les conditions n'ont pas pu être récupérées"
+      },
+      "cityName": {
+        "type": "string"
+      },
+      "date": {
+        "type": "string",
+        "description": "Jour concerné au format AAAA-MM-JJ, heure du Niger"
+      },
+      "localTime": {
+        "type": "string",
+        "description": "Heure locale du Niger au moment de l'appel, au format HH:MM"
+      },
+      "weather": {
+        "type": "object",
+        "description": "Conditions météo du jour. Absent si le service météo est indisponible.",
+        "properties": {
+          "temperatureC": {
+            "type": "number",
+            "description": "Température actuelle en degrés Celsius"
+          },
+          "feelsLikeC": {
+            "type": "number",
+            "description": "Température ressentie en degrés Celsius"
+          },
+          "maxTemperatureC": {
+            "type": "number"
+          },
+          "minTemperatureC": {
+            "type": "number"
+          },
+          "humidityPercent": {
+            "type": "number"
+          },
+          "windSpeedKmh": {
+            "type": "number",
+            "description": "Vitesse du vent en km/h"
+          },
+          "windGustKmh": {
+            "type": "number",
+            "description": "Rafales en km/h : au-delà de 40, l'harmattan lève la poussière et la visibilité chute"
+          },
+          "windDirection": {
+            "type": "string",
+            "description": "Direction du vent en points cardinaux (N, NE, E, …)"
+          },
+          "uvIndex": {
+            "type": "number"
+          },
+          "precipitationMm": {
+            "type": "number",
+            "description": "Cumul de pluie attendu sur la journée, en millimètres"
+          },
+          "condition": {
+            "type": "string",
+            "description": "Condition dominante en français (Ensoleillé, Poussière en suspension, Averses, …)"
+          },
+          "dustAdvisory": {
+            "type": "string",
+            "description": "Conseil lié à la poussière et à l'harmattan, vide s'il n'y a rien à signaler"
+          },
+          "rideAdvisory": {
+            "type": "string",
+            "description": "Conseil de mobilité en français : forte chaleur, pluie qui ralentit la circulation, visibilité réduite"
+          }
+        }
+      },
+      "prayerTimes": {
+        "type": "object",
+        "description": "Horaires de prière du jour en heure locale du Niger, au format HH:MM. Toujours présent.",
+        "properties": {
+          "fajr": {
+            "type": "string"
+          },
+          "sunrise": {
+            "type": "string"
+          },
+          "dhuhr": {
+            "type": "string"
+          },
+          "asr": {
+            "type": "string"
+          },
+          "maghrib": {
+            "type": "string"
+          },
+          "isha": {
+            "type": "string"
+          },
+          "nextPrayerName": {
+            "type": "string",
+            "description": "Nom de la prochaine prière"
+          },
+          "nextPrayerTime": {
+            "type": "string",
+            "description": "Heure de la prochaine prière au format HH:MM"
+          },
+          "minutesToNextPrayer": {
+            "type": "number",
+            "description": "Minutes restantes avant la prochaine prière"
+          }
+        }
+      }
+    }
+  },
+  "secrets": [],
+  "usageDescription": "This action is triggered by:\n\n- **A passenger opening the app**: the weather and prayer-time banner at the top of the passenger Home tab loads it for the selected city, as soon as the tab is shown\n  It tells the passenger the current temperature, the harmattan dust and wind, and the five prayer times of the day, so they can decide when to travel."
+}

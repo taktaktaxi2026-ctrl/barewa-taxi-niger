@@ -1,0 +1,86 @@
+{
+  "name": "NotifySubscribersDeparture",
+  "type": "code",
+  "description": "Prévient en une fois tous les abonnés actifs d'un chauffeur qu'il prend la route. Envoie un SMS personnalisé à chaque abonné (nom du chauffeur, heure de passage, point de ramassage, prix convenu), horodate lastNotifiedAt, et renvoie pour chacun un lien WhatsApp pré-rempli que le chauffeur peut ouvrir s'il préfère écrire. Peut être limité aux abonnés d'un jour de la semaine donné.",
+  "iconName": "megaphone",
+  "exposedToUI": true,
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "driverId"
+    ],
+    "properties": {
+      "driverId": {
+        "type": "number",
+        "description": "Chauffeur qui annonce son départ"
+      },
+      "dayOfWeek": {
+        "type": "string",
+        "description": "Ne prévenir que les abonnés dont ce jour figure dans activeDays (Lundi, Mardi, …) ; omis, tous les abonnés actifs sont prévenus"
+      },
+      "departureTime": {
+        "type": "string",
+        "description": "Heure de passage annoncée au format HH:MM, heure du Niger ; omise, l'heure habituelle de chaque abonné est reprise"
+      },
+      "customMessage": {
+        "type": "string",
+        "description": "Message libre du chauffeur ajouté au SMS (retard, changement d'itinéraire)"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "success"
+    ],
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "message": {
+        "type": "string",
+        "description": "Résumé affiché au chauffeur"
+      },
+      "notifiedCount": {
+        "type": "number",
+        "description": "Nombre d'abonnés effectivement prévenus par SMS"
+      },
+      "failedCount": {
+        "type": "number",
+        "description": "Nombre d'abonnés dont le SMS n'est pas parti"
+      },
+      "subscribers": {
+        "type": "array",
+        "description": "Détail par abonné, avec le lien WhatsApp prêt à ouvrir",
+        "items": {
+          "type": "object",
+          "properties": {
+            "subscriberId": {
+              "type": "number"
+            },
+            "contactName": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "smsDelivered": {
+              "type": "boolean"
+            },
+            "failureReason": {
+              "type": "string"
+            },
+            "whatsappUrl": {
+              "type": "string"
+            },
+            "messageText": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "secrets": [],
+  "usageDescription": "This action is triggered by:\n\n- **A driver leaving for their regular round**: the \"Notifier mon départ sur WhatsApp et SMS\" button at the top of the driver \"Abonnés\" tab\n  It sends every regular passenger a text message with the announced pick-up time, and gives the driver a ready-made WhatsApp link for each one."
+}

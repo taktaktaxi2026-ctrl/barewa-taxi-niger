@@ -1,0 +1,119 @@
+{
+  "name": "TriggerSosAlert",
+  "type": "code",
+  "description": "Déclenche une alerte d'urgence. Fige la position GPS et la course en cours, crée la ligne dans SosAlerts au statut Ouverte, et prévient immédiatement par SMS le contact d'urgence du passager, l'autre partie de la course et le superviseur, avec la position et un lien Google Maps. Renvoie le numéro des secours à composer et le message WhatsApp prêt à partager — l'appel et le partage restent des gestes de l'utilisateur, l'application ne les déclenche pas à sa place.",
+  "iconName": "siren",
+  "exposedToUI": true,
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "latitude",
+      "longitude"
+    ],
+    "properties": {
+      "latitude": {
+        "type": "number",
+        "description": "Latitude relevée au moment du déclenchement"
+      },
+      "longitude": {
+        "type": "number",
+        "description": "Longitude relevée au moment du déclenchement"
+      },
+      "accuracyMeters": {
+        "type": "number",
+        "description": "Précision de la position GPS rapportée par le téléphone, en mètres"
+      },
+      "triggeredByEmail": {
+        "type": "string",
+        "description": "Email du compte qui déclenche l'alerte"
+      },
+      "triggeredByRole": {
+        "type": "string",
+        "description": "Profil depuis lequel l'alerte est déclenchée",
+        "enum": [
+          "Passager",
+          "Chauffeur",
+          "Admin"
+        ]
+      },
+      "rideId": {
+        "type": "number",
+        "description": "Course en cours au moment du déclenchement, s'il y en a une"
+      },
+      "cityId": {
+        "type": "number",
+        "description": "Ville dans laquelle l'alerte est déclenchée"
+      },
+      "kind": {
+        "type": "string",
+        "description": "Nature de l'urgence signalée",
+        "enum": [
+          "Danger immédiat",
+          "Accident",
+          "Panne",
+          "Agression",
+          "Malaise",
+          "Autre"
+        ],
+        "default": "Danger immédiat"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "success"
+    ],
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "message": {
+        "type": "string",
+        "description": "Message de confirmation affiché à la personne en difficulté"
+      },
+      "alertId": {
+        "type": "number"
+      },
+      "reference": {
+        "type": "string",
+        "description": "Référence de l'alerte à communiquer aux secours"
+      },
+      "emergencyNumber": {
+        "type": "string",
+        "description": "Numéro des secours à composer (17, Police Secours au Niger)"
+      },
+      "mapsUrl": {
+        "type": "string",
+        "description": "Lien Google Maps vers la position figée"
+      },
+      "whatsappShareText": {
+        "type": "string",
+        "description": "Message d'alerte prêt à être partagé sur WhatsApp, position incluse"
+      },
+      "notifiedContacts": {
+        "type": "array",
+        "description": "Personnes effectivement prévenues par SMS",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            },
+            "delivered": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  },
+  "secrets": [],
+  "usageDescription": "This action is triggered by:\n\n- **Anyone in danger**: the red SOS button at the right of the top bar, then the confirmation button \"Déclencher l'alerte\" in the emergency window\n  Confirmation is asked first because the alert is irreversible: it freezes the GPS position and sends text messages to the emergency contacts and to the supervisor. The window then shows the emergency number to call and a ready-made WhatsApp message to share."
+}

@@ -1,0 +1,98 @@
+{
+  "name": "RunAutonomousAgents",
+  "type": "code",
+  "description": "Fait tourner les cinq agents du Cerveau BAREWA sur les données réelles de l'application et écrit leurs constats dans AgentInsights. L'Observateur mesure la santé de l'activité et la fraîcheur des positions des chauffeurs en ligne ; l'Analyste prédit la demande par ville et par tranche horaire à partir de l'historique des courses ; l'Optimiseur compare l'offre de chauffeurs à la demande par ville et recommande des repositionnements ; le Correcteur détecte les anomalies (positions hors zone, pièces expirées, paiements bloqués, courses figées) ; le Communicateur suit la couverture des langues et des moyens de paiement. Chaque constat porte ses chiffres pour être affiché et tracé.",
+  "iconName": "brain",
+  "exposedToUI": true,
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "cityId": {
+        "type": "number",
+        "description": "Limiter l'analyse à une ville ; omis, l'analyse est nationale, ville par ville"
+      },
+      "lookbackDays": {
+        "type": "number",
+        "description": "Profondeur d'historique analysée, en jours (1 à 365)",
+        "default": 30
+      },
+      "agents": {
+        "type": "array",
+        "description": "Restreindre l'exécution à certains agents ; omis, les cinq tournent",
+        "items": {
+          "type": "string",
+          "enum": [
+            "Observateur",
+            "Analyste",
+            "Optimiseur",
+            "Correcteur",
+            "Communicateur"
+          ]
+        }
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "success",
+      "insights"
+    ],
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "message": {
+        "type": "string",
+        "description": "Résumé de l'exécution affiché au superviseur"
+      },
+      "ranAt": {
+        "type": "string",
+        "description": "Horodatage de l'exécution, en ISO 8601"
+      },
+      "createdCount": {
+        "type": "number",
+        "description": "Nombre de constats écrits dans AgentInsights"
+      },
+      "insights": {
+        "type": "array",
+        "description": "Constats produits par cette exécution",
+        "items": {
+          "type": "object",
+          "properties": {
+            "insightId": {
+              "type": "number"
+            },
+            "agentName": {
+              "type": "string"
+            },
+            "severity": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            },
+            "recommendation": {
+              "type": "string"
+            },
+            "cityId": {
+              "type": "number"
+            },
+            "cityName": {
+              "type": "string"
+            },
+            "metrics": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "secrets": [],
+  "usageDescription": "This action is triggered by:\n\n- **A supervisor asking for a fresh analysis**: the \"Lancer l'analyse\" button in the \"Cerveau IA\" tab of the administration space, and in the same panel opened from the brain button in the top bar\n  It is never run automatically when the screen opens, because it takes time and records its findings: the tab simply shows the findings already produced, newest first, grouped by agent."
+}

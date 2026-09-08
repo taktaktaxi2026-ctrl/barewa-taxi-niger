@@ -1,0 +1,70 @@
+{
+  "name": "ExportOperationsData",
+  "type": "code",
+  "description": "Exporte les données d'exploitation de l'application au format CSV pour la comptabilité ou la sauvegarde : courses, paiements, chauffeurs, abonnés, alertes ou grille tarifaire, sur une période donnée. Les courses de simulation sont exclues. Le fichier est déposé dans le stockage de l'app et son URL est renvoyée pour téléchargement immédiat.",
+  "iconName": "download",
+  "exposedToUI": true,
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "dataset"
+    ],
+    "properties": {
+      "dataset": {
+        "type": "string",
+        "description": "Jeu de données à exporter",
+        "enum": [
+          "Courses",
+          "Paiements",
+          "Chauffeurs",
+          "Abonnés",
+          "Alertes SOS",
+          "Grille tarifaire"
+        ]
+      },
+      "fromDate": {
+        "type": "string",
+        "description": "Début de la période au format AAAA-MM-JJ ; omis, tout l'historique est exporté"
+      },
+      "toDate": {
+        "type": "string",
+        "description": "Fin de la période au format AAAA-MM-JJ, incluse"
+      },
+      "cityId": {
+        "type": "number",
+        "description": "Limiter l'export à une ville ; omis, tout le pays"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "success"
+    ],
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "message": {
+        "type": "string",
+        "description": "Résumé de l'export affiché au superviseur"
+      },
+      "fileUrl": {
+        "type": "string",
+        "description": "URL du fichier CSV généré, à ouvrir pour télécharger. Absent quand aucune ligne ne correspond."
+      },
+      "fileName": {
+        "type": "string"
+      },
+      "rowCount": {
+        "type": "number",
+        "description": "Nombre de lignes exportées"
+      },
+      "dataset": {
+        "type": "string"
+      }
+    }
+  },
+  "secrets": [],
+  "usageDescription": "This action is triggered by:\n\n- **A supervisor exporting figures**: the \"Générer le fichier CSV\" button in the \"Exporter les données d'exploitation\" panel of the administration \"Comptabilité\" tab, after choosing the dataset, the period and the city\n  A download link appears once the file is ready; when no row matches the period, the panel says so instead of offering an empty file."
+}

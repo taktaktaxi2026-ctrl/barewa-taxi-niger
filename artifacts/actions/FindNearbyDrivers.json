@@ -1,0 +1,137 @@
+{
+  "name": "FindNearbyDrivers",
+  "type": "code",
+  "description": "Trouve les chauffeurs disponibles autour d'un point. Lit DriverProfile, ne retient que les chauffeurs en ligne au statut Vérifié dans la ville demandée (et du type de véhicule demandé si précisé), calcule la distance orthodromique jusqu'au point de prise en charge, écarte ceux au-delà du rayon et renvoie les plus proches classés par délai d'arrivée croissant, avec les informations d'affichage du véhicule et sa clé de modèle 3D.",
+  "iconName": "radar",
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "cityId",
+      "latitude",
+      "longitude"
+    ],
+    "properties": {
+      "cityId": {
+        "type": "number",
+        "description": "Identifiant de la ville dans laquelle chercher"
+      },
+      "latitude": {
+        "type": "number",
+        "description": "Latitude du point de prise en charge"
+      },
+      "longitude": {
+        "type": "number",
+        "description": "Longitude du point de prise en charge"
+      },
+      "vehicleTypeId": {
+        "type": "number",
+        "description": "Ne retenir que les chauffeurs conduisant ce type de véhicule ; omis, tous les types sont renvoyés"
+      },
+      "radiusKm": {
+        "type": "number",
+        "description": "Rayon de recherche en kilomètres",
+        "default": 6
+      },
+      "limit": {
+        "type": "number",
+        "description": "Nombre maximum de chauffeurs renvoyés",
+        "default": 12
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "drivers",
+      "count"
+    ],
+    "properties": {
+      "count": {
+        "type": "number",
+        "description": "Nombre de chauffeurs disponibles trouvés"
+      },
+      "searchRadiusKm": {
+        "type": "number",
+        "description": "Rayon effectivement utilisé pour la recherche"
+      },
+      "drivers": {
+        "type": "array",
+        "description": "Chauffeurs disponibles, du plus proche au plus éloigné",
+        "items": {
+          "type": "object",
+          "properties": {
+            "driverId": {
+              "type": "number"
+            },
+            "fullName": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "whatsappNumber": {
+              "type": "string"
+            },
+            "profilePhotoUrl": {
+              "type": "string"
+            },
+            "rating": {
+              "type": "number"
+            },
+            "totalRides": {
+              "type": "number"
+            },
+            "spokenLanguages": {
+              "type": "string"
+            },
+            "acceptedPaymentMethods": {
+              "type": "string"
+            },
+            "plateNumber": {
+              "type": "string"
+            },
+            "vehicleColor": {
+              "type": "string"
+            },
+            "vehiclePhotoUrl": {
+              "type": "string"
+            },
+            "vehicleTypeId": {
+              "type": "number"
+            },
+            "vehicleTypeName": {
+              "type": "string"
+            },
+            "modelKey": {
+              "type": "string"
+            },
+            "seats": {
+              "type": "number"
+            },
+            "hasAirConditioning": {
+              "type": "boolean"
+            },
+            "vehicle3DConfig": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "currentLatitude": {
+              "type": "number"
+            },
+            "currentLongitude": {
+              "type": "number"
+            },
+            "distanceKm": {
+              "type": "number"
+            },
+            "etaMin": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "exposedToUI": true,
+  "usageDescription": "This action is triggered by:\n\n- **A passenger waiting for a driver**: tap on \"Voir les chauffeurs disponibles\" on the live tracking screen, while the ride is still being matched\n  It lists the drivers available around the pickup point with their distance and arrival time, so the passenger can see who is nearby and text them."
+}

@@ -1,0 +1,83 @@
+{
+  "name": "InitiateMobileMoneyPayment",
+  "type": "code",
+  "description": "Déclenche le règlement mobile money d'une course. Lit l'opérateur dans PaymentProviders, compose la chaîne USSD de transfert marchand en insérant le numéro marchand et le montant exact dans ussdTemplate, crée la ligne de paiement dans Payments au statut Initié avec la ventilation commission plateforme / net chauffeur, passe la course en paiement En cours, et renvoie au passager le code à composer sur son téléphone ainsi que la marche à suivre de l'opérateur.",
+  "iconName": "smartphone-nfc",
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "rideId",
+      "paymentProviderId",
+      "payerPhoneNumber"
+    ],
+    "properties": {
+      "rideId": {
+        "type": "number",
+        "description": "Course à régler"
+      },
+      "paymentProviderId": {
+        "type": "number",
+        "description": "Opérateur mobile money utilisé pour le règlement"
+      },
+      "payerPhoneNumber": {
+        "type": "string",
+        "description": "Numéro mobile money du passager qui sera débité"
+      },
+      "amount": {
+        "type": "number",
+        "description": "Montant à régler en FCFA ; omis, le montant facturé de la course est utilisé"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "success"
+    ],
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "message": {
+        "type": "string",
+        "description": "Message à afficher au passager, notamment en cas de refus"
+      },
+      "paymentId": {
+        "type": "number"
+      },
+      "reference": {
+        "type": "string",
+        "description": "Référence interne du règlement"
+      },
+      "amount": {
+        "type": "number",
+        "description": "Montant à régler en FCFA"
+      },
+      "providerName": {
+        "type": "string"
+      },
+      "ussdCode": {
+        "type": "string",
+        "description": "Code USSD principal de l'opérateur"
+      },
+      "ussdString": {
+        "type": "string",
+        "description": "Chaîne USSD complète à composer, montant et numéro marchand inclus"
+      },
+      "merchantNumber": {
+        "type": "string",
+        "description": "Numéro marchand BAREWA destinataire du transfert"
+      },
+      "instructions": {
+        "type": "string",
+        "description": "Marche à suivre de l'opérateur affichée au passager"
+      },
+      "requiresReference": {
+        "type": "boolean",
+        "description": "Le passager doit-il saisir la référence de transaction reçue par SMS pour confirmer"
+      }
+    }
+  },
+  "exposedToUI": true,
+  "usageDescription": "This action is triggered by:\n\n- **A passenger paying by mobile money**: tap on the \"Payer\" button on the payment panel that appears when the ride is finished, after entering the mobile money number to debit\n  It returns the full code to dial on the phone, shown very large and tappable, together with the operator's step-by-step instructions."
+}
