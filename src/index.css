@@ -1,0 +1,187 @@
+@import 'tailwindcss';
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/inter";
+@import 'leaflet/dist/leaflet.css';
+
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Blocks base rules (init-independent — `shadcn init` appends its own blocks and keeps these):
+   the min-width fix lets flex/grid children shrink so `truncate` works in generated layouts;
+   the date-input fix keeps the native picker icon visible in dark mode. */
+@layer base {
+  *:not(td):not(th):not(table) {
+    min-width: 0;
+  }
+
+  .dark input[type='date']::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+  /* Amounts in FCFA read as aligned columns. */
+  .amount {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  /* Leaflet tiles inherit the dark shell instead of flashing white. */
+  .leaflet-container {
+    background: var(--muted);
+    font-family: inherit;
+  }
+  .leaflet-popup-content-wrapper,
+  .leaflet-popup-tip {
+    background: var(--popover);
+    color: var(--popover-foreground);
+  }
+}
+
+@theme inline {
+  --font-heading: var(--font-sans);
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-foreground: var(--surface-foreground);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-bubble-loader: bubbleLoader 1.8s infinite ease-in-out;
+  --animate-typing-dot: typingDot 1.4s ease-in-out infinite;
+  --animate-size-pulse: sizePulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  @keyframes shimmer {
+  from {
+    background-position: 0 0;
+    }
+  to {
+    background-position: -200% 0;
+    }
+  }
+  @keyframes bubbleLoader {
+  0%, 80%, 100% {
+    box-shadow: 0 2.5em 0 -1.3em;
+    }
+  40% {
+    box-shadow: 0 2.5em 0 0;
+    }
+  }
+  @keyframes typingDot {
+  0%, 60%, 100% {
+    opacity: 0.25;
+    }
+  30% {
+    opacity: 1;
+    }
+  }
+  @keyframes sizePulse {
+  0%, 100% {
+    transform: scale(1);
+    }
+  50% {
+    transform: scale(1.05);
+    }
+  }
+}
+
+/* BAREWA — design system sombre premium.
+   #0A0D14 base, #141824 surfaces, #1C1C1C surfaces enfoncées,
+   accent Or Jaune Sahel #F5B000. La marque est sombre par nature :
+   :root et .dark portent la même palette pour que l'app reste
+   identique quel que soit le mode d'affichage de la plateforme. */
+:root,
+.dark {
+  --background: oklch(0.16 0.015 265);
+  --foreground: oklch(0.97 0.004 260);
+  --card: oklch(0.22 0.018 267);
+  --card-foreground: oklch(0.97 0.004 260);
+  --popover: oklch(0.235 0.018 267);
+  --popover-foreground: oklch(0.97 0.004 260);
+  --primary: oklch(0.79 0.163 78);
+  --primary-foreground: oklch(0.16 0.015 265);
+  --secondary: oklch(0.275 0.016 265);
+  --secondary-foreground: oklch(0.97 0.004 260);
+  --muted: oklch(0.25 0.008 265);
+  --muted-foreground: oklch(0.71 0.012 262);
+  --accent: oklch(0.31 0.018 265);
+  --accent-foreground: oklch(0.97 0.004 260);
+  --destructive: oklch(0.63 0.21 26);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.79 0.163 78);
+  --surface: oklch(0.25 0 0);
+  --surface-foreground: oklch(0.9 0.004 260);
+  --chart-1: oklch(0.79 0.163 78);
+  --chart-2: oklch(0.7 0.145 46);
+  --chart-3: oklch(0.73 0.13 165);
+  --chart-4: oklch(0.66 0.135 252);
+  --chart-5: oklch(0.69 0.15 330);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.195 0.016 266);
+  --sidebar-foreground: oklch(0.97 0.004 260);
+  --sidebar-primary: oklch(0.79 0.163 78);
+  --sidebar-primary-foreground: oklch(0.16 0.015 265);
+  --sidebar-accent: oklch(0.29 0.018 265);
+  --sidebar-accent-foreground: oklch(0.97 0.004 260);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.79 0.163 78);
+}
+  [data-slot='agent-chat-message-part'] li :is([data-streamdown='ordered-list'], [data-streamdown='unordered-list']) {
+    padding-left: 0;
+    padding-inline-start: 1.5rem;
+}
+  [data-slot='agent-chat-message-part'] [data-streamdown='blockquote'] {
+    border-left-width: 0;
+    border-inline-start-width: 4px;
+    padding-left: 0;
+    padding-inline-start: 1rem;
+}
+  [data-slot='agent-chat-message-part'] :is([data-streamdown='table-header-cell'], [data-streamdown='table-cell']) {
+    text-align: start;
+}
+  [data-slot='agent-chat-message-part'] [data-streamdown='code-block'] {
+    direction: ltr;
+    text-align: left;
+}
