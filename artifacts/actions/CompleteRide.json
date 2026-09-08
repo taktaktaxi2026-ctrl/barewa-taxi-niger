@@ -1,0 +1,81 @@
+{
+  "name": "CompleteRide",
+  "type": "code",
+  "description": "Clôture une course. Recalcule le montant final en FCFA à partir de la distance et de la durée réellement parcourues (à défaut, conserve le prix verrouillé), ventile la commission plateforme et le net chauffeur selon la grille tarifaire de la ville, passe la course au statut Terminée, met à jour les compteurs du chauffeur (courses, gains, note moyenne) et du passager (courses, montant dépensé). Pour un règlement en espèces, enregistre aussi le paiement encaissé dans Payments.",
+  "iconName": "flag",
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "rideId"
+    ],
+    "properties": {
+      "rideId": {
+        "type": "number",
+        "description": "Identifiant de la course à clôturer"
+      },
+      "actualDistanceKm": {
+        "type": "number",
+        "description": "Distance réellement parcourue en kilomètres ; omise, la distance estimée est conservée"
+      },
+      "actualDurationMin": {
+        "type": "number",
+        "description": "Durée réelle du trajet en minutes ; omise, la durée estimée est conservée"
+      },
+      "ratingByDriver": {
+        "type": "number",
+        "description": "Note de 1 à 5 attribuée au passager par le chauffeur"
+      },
+      "cashCollected": {
+        "type": "boolean",
+        "description": "Le chauffeur déclare-t-il avoir encaissé la course en espèces",
+        "default": false
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "success"
+    ],
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "message": {
+        "type": "string",
+        "description": "Message à afficher au chauffeur"
+      },
+      "rideId": {
+        "type": "number"
+      },
+      "finalFare": {
+        "type": "number",
+        "description": "Montant final facturé en FCFA"
+      },
+      "distanceKm": {
+        "type": "number"
+      },
+      "durationMin": {
+        "type": "number"
+      },
+      "platformCommission": {
+        "type": "number",
+        "description": "Commission plateforme en FCFA"
+      },
+      "driverPayout": {
+        "type": "number",
+        "description": "Net chauffeur en FCFA"
+      },
+      "paymentStatus": {
+        "type": "string",
+        "description": "État du règlement de la course après clôture"
+      },
+      "amountDueFromPassenger": {
+        "type": "number",
+        "description": "Reste à régler par le passager en FCFA"
+      }
+    }
+  },
+  "exposedToUI": true,
+  "usageDescription": "This action is triggered by:\n\n- **A driver ending a trip**: tap on \"Terminer la course\", then \"Clôturer la course\" in the closing window, where the driver can enter the real distance and duration, rate the passenger and tick \"Encaissé en espèces\"\n  It settles the final amount in FCFA, splits the platform share and the driver's net earnings, and closes the ride."
+}

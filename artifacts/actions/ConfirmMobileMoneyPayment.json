@@ -1,0 +1,58 @@
+{
+  "name": "ConfirmMobileMoneyPayment",
+  "type": "code",
+  "description": "Confirme un règlement mobile money à partir de la référence de transaction reçue par SMS. Vérifie que le paiement est bien en attente et que la référence n'a pas déjà été utilisée sur un autre règlement, passe le paiement à Confirmé, passe la course en Payé, marque la part chauffeur à verser et met à jour ses gains cumulés. Refuse une référence vide, déjà consommée ou rattachée à une course inexistante.",
+  "iconName": "badge-check",
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "paymentId",
+      "transactionReference"
+    ],
+    "properties": {
+      "paymentId": {
+        "type": "number",
+        "description": "Règlement à confirmer"
+      },
+      "transactionReference": {
+        "type": "string",
+        "description": "Référence de transaction communiquée par l'opérateur au passager par SMS"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "success"
+    ],
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "message": {
+        "type": "string",
+        "description": "Message à afficher au passager"
+      },
+      "paymentId": {
+        "type": "number"
+      },
+      "status": {
+        "type": "string",
+        "description": "Nouvel état du règlement"
+      },
+      "amount": {
+        "type": "number"
+      },
+      "ridePaymentStatus": {
+        "type": "string",
+        "description": "Nouvel état de règlement de la course"
+      },
+      "driverPayout": {
+        "type": "number",
+        "description": "Net chauffeur en FCFA à verser"
+      }
+    }
+  },
+  "exposedToUI": true,
+  "usageDescription": "This action is triggered by:\n\n- **A passenger confirming a transfer**: tap on \"Confirmer le paiement\" after copying the transaction reference received by text message from the operator\n  It checks the reference and marks the ride as paid, so the driver's share is queued for payout."
+}

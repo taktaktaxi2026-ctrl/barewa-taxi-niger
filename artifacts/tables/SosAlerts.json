@@ -1,0 +1,115 @@
+{
+  "name": "SosAlerts",
+  "description": "Les alertes d'urgence déclenchées depuis l'application",
+  "technicalDescription": "Journal des appuis sur le bouton SOS, par un passager ou un chauffeur. L'alerte fige la position GPS au moment du déclenchement et la course en cours s'il y en a une, puis prévient par SMS le contact d'urgence du passager et le superviseur. L'appel au 17 (Police Secours) et le partage WhatsApp restent des gestes de l'utilisateur — l'application prépare le numéro et le message, elle ne passe pas l'appel à sa place. Le superviseur suit et clôt chaque alerte depuis la Vue Globale.",
+  "iconName": "siren",
+  "displayColumn": "reference",
+  "uniqueKey": ["reference"],
+  "columns": [
+    {
+      "name": "reference",
+      "type": "string",
+      "description": "Référence de l'alerte (ex. SOS-2026-0143)"
+    },
+    {
+      "name": "triggeredByEmail",
+      "type": "string",
+      "description": "Compte utilisateur ayant déclenché l'alerte",
+      "reference": {
+        "table": "Users",
+        "column": "email",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "triggeredByRole",
+      "type": "string",
+      "description": "Profil depuis lequel l'alerte a été déclenchée",
+      "enum": ["Passager", "Chauffeur", "Admin"]
+    },
+    {
+      "name": "triggeredByName",
+      "type": "string",
+      "description": "Nom de la personne au moment du déclenchement"
+    },
+    {
+      "name": "triggeredByPhone",
+      "type": "string",
+      "description": "Numéro de la personne, pour la rappeler"
+    },
+    {
+      "name": "rideId",
+      "type": "number",
+      "description": "Course en cours au moment de l'alerte, s'il y en avait une",
+      "reference": {
+        "table": "Rides",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "cityId",
+      "type": "number",
+      "description": "Ville dans laquelle l'alerte a été déclenchée",
+      "reference": {
+        "table": "Cities",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "latitude",
+      "type": "number",
+      "description": "Latitude figée au déclenchement"
+    },
+    {
+      "name": "longitude",
+      "type": "number",
+      "description": "Longitude figée au déclenchement"
+    },
+    {
+      "name": "accuracyMeters",
+      "type": "number",
+      "description": "Précision de la position GPS en mètres, telle que rapportée par le téléphone"
+    },
+    {
+      "name": "kind",
+      "type": "string",
+      "description": "Nature de l'urgence signalée",
+      "enum": [
+        "Danger immédiat",
+        "Accident",
+        "Panne",
+        "Agression",
+        "Malaise",
+        "Autre"
+      ]
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "description": "État de traitement de l'alerte",
+      "enum": ["Ouverte", "Prise en charge", "Résolue", "Fausse alerte"]
+    },
+    {
+      "name": "notifiedContacts",
+      "type": "string",
+      "description": "Personnes effectivement prévenues par SMS, séparées par des virgules"
+    },
+    {
+      "name": "resolvedBy",
+      "type": "string",
+      "description": "Email du superviseur ayant clôturé l'alerte"
+    },
+    {
+      "name": "resolvedAt",
+      "type": "datetime",
+      "description": "Horodatage de la clôture"
+    },
+    {
+      "name": "resolutionNotes",
+      "type": "string",
+      "description": "Compte rendu de la prise en charge"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "name": "VehicleTypes",
+  "description": "Référentiel partagé par la grille tarifaire, les chauffeurs et les courses. Le champ modelKey pilote le moteur de génération 3D Three.js : chaque clé correspond à une carrosserie modélisée (tricycle bâché sahel, Starlet à hayon vertical, Yaris profilée, Corolla berline). Les champs seats, hasAirConditioning et luggageCapacity alimentent le comparateur affiché au passager avant la commande.",
+  "columns": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Nom du type de véhicule affiché au passager"
+    },
+    {
+      "name": "localName",
+      "type": "string",
+      "description": "Nom local en haoussa ou zarma utilisé dans la rue"
+    },
+    {
+      "name": "modelKey",
+      "type": "string",
+      "description": "Clé technique du modèle 3D à générer par le moteur Three.js",
+      "enum": [
+        "tricycle",
+        "starlet",
+        "yaris",
+        "corolla"
+      ]
+    },
+    {
+      "name": "seats",
+      "type": "number",
+      "description": "Nombre de places passagers"
+    },
+    {
+      "name": "hasAirConditioning",
+      "type": "boolean",
+      "description": "Le véhicule est-il climatisé"
+    },
+    {
+      "name": "luggageCapacity",
+      "type": "number",
+      "description": "Nombre de bagages standard transportables"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Description du véhicule et de son usage typique au Niger"
+    },
+    {
+      "name": "iconName",
+      "type": "string",
+      "description": "Nom d'icône Lucide représentant le type de véhicule"
+    },
+    {
+      "name": "sortOrder",
+      "type": "number",
+      "description": "Ordre d'affichage dans le sélecteur de véhicule, du plus économique au plus confortable"
+    },
+    {
+      "name": "isActive",
+      "type": "boolean",
+      "description": "Ce type de véhicule est-il proposé aux passagers"
+    }
+  ],
+  "permission": {
+    "type": "public"
+  }
+}

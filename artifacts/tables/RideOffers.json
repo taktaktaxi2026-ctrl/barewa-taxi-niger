@@ -1,0 +1,67 @@
+{
+  "name": "RideOffers",
+  "description": "Les offres et contre-offres de prix échangées sur une course",
+  "technicalDescription": "Le marchandage est la norme au Niger : le passager propose un prix, le chauffeur contre-propose, jusqu'à accord. Chaque tour de négociation est une ligne, avec son émetteur (Passager ou Chauffeur) et son montant en FCFA. La dernière offre au statut Acceptée fixe le prix définitif écrit sur Rides.estimatedFare par l'action AcceptRideOffer. Conserver tout l'historique permet au superviseur de comprendre un litige de prix et de mesurer l'écart entre tarif calculé et prix réellement pratiqué.",
+  "iconName": "handshake",
+  "displayColumn": "summary",
+  "columns": [
+    {
+      "name": "summary",
+      "type": "string",
+      "description": "Résumé lisible de l'offre, au format « Chauffeur — 1 500 FCFA »",
+      "expression": "(item.side || '') + ' — ' + (item.amount || 0) + ' FCFA'"
+    },
+    {
+      "name": "rideId",
+      "type": "number",
+      "description": "Course sur laquelle porte la négociation",
+      "reference": {
+        "table": "Rides",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "driverId",
+      "type": "number",
+      "description": "Chauffeur concerné par cette offre : celui qui contre-propose, ou celui à qui le passager s'adresse",
+      "reference": {
+        "table": "DriverProfile",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "side",
+      "type": "string",
+      "description": "Qui a émis cette offre",
+      "enum": ["Passager", "Chauffeur"]
+    },
+    {
+      "name": "amount",
+      "type": "number",
+      "description": "Prix proposé en FCFA"
+    },
+    {
+      "name": "previousAmount",
+      "type": "number",
+      "description": "Montant de l'offre précédente, pour afficher l'écart au fil de la négociation"
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "description": "Sort réservé à cette offre",
+      "enum": ["Proposée", "Acceptée", "Refusée", "Dépassée", "Expirée"]
+    },
+    {
+      "name": "reason",
+      "type": "string",
+      "description": "Justification de l'écart donnée par l'émetteur (embouteillage, pluie, retour à vide, course de nuit)"
+    },
+    {
+      "name": "respondedAt",
+      "type": "datetime",
+      "description": "Horodatage de la réponse à cette offre"
+    }
+  ]
+}

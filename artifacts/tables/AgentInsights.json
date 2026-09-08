@@ -1,0 +1,106 @@
+{
+  "name": "AgentInsights",
+  "description": "Les constats et recommandations produits par les cinq agents du Cerveau BAREWA",
+  "technicalDescription": "Chaque exécution de RunAutonomousAgents analyse les données réelles de l'app (courses, chauffeurs en ligne, positions, paiements, alertes) et écrit ici un constat par agent : l'Observateur mesure la santé de l'activité et la fraîcheur des positions, l'Analyste prédit la demande par ville et par tranche horaire, l'Optimiseur recommande des repositionnements de flotte, le Correcteur signale les anomalies de géolocalisation et de données, le Communicateur suit la couverture des langues et des annonces vocales. Les constats sont horodatés et conservés pour que le superviseur voie l'évolution ; il les marque comme traités ou ignorés.",
+  "iconName": "brain",
+  "displayColumn": "title",
+  "columns": [
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Titre court du constat, lisible d'un coup d'œil"
+    },
+    {
+      "name": "agentName",
+      "type": "string",
+      "description": "Agent du Cerveau BAREWA à l'origine du constat",
+      "enum": [
+        "Observateur",
+        "Analyste",
+        "Optimiseur",
+        "Correcteur",
+        "Communicateur"
+      ]
+    },
+    {
+      "name": "severity",
+      "type": "string",
+      "description": "Niveau d'attention requis",
+      "enum": ["Information", "À surveiller", "Action recommandée", "Critique"]
+    },
+    {
+      "name": "body",
+      "type": "string",
+      "description": "Constat détaillé en français, avec les chiffres qui le fondent"
+    },
+    {
+      "name": "recommendation",
+      "type": "string",
+      "description": "Action concrète recommandée au superviseur"
+    },
+    {
+      "name": "cityId",
+      "type": "number",
+      "description": "Ville concernée par le constat ; vide si le constat est national",
+      "reference": {
+        "table": "Cities",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "metrics",
+      "type": "object",
+      "description": "Chiffres bruts sur lesquels repose le constat, pour affichage et graphiques",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Libellé de l'indicateur principal"
+          },
+          "value": {
+            "type": "number",
+            "description": "Valeur de l'indicateur principal"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unité de l'indicateur (FCFA, courses, minutes, %)"
+          },
+          "comparison": {
+            "type": "number",
+            "description": "Valeur de référence à laquelle l'indicateur est comparé"
+          },
+          "dataAvailable": {
+            "type": "boolean",
+            "description": "Le constat repose-t-il sur des données suffisantes"
+          },
+          "series": {
+            "type": "array",
+            "description": "Série de valeurs pour un graphique, par tranche horaire ou par ville",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": { "type": "string" },
+                "hour": { "type": "number" },
+                "rides": { "type": "number" },
+                "value": { "type": "number" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "description": "Suite donnée au constat par le superviseur",
+      "enum": ["Nouveau", "Vu", "Traité", "Ignoré"]
+    },
+    {
+      "name": "generatedAt",
+      "type": "datetime",
+      "description": "Horodatage de production du constat"
+    }
+  ]
+}

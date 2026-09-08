@@ -1,0 +1,37 @@
+{
+  "name": "NotifyDriverBySms",
+  "type": "dag",
+  "description": "Envoie un SMS à un chauffeur pour lui signaler une nouvelle demande de course, un changement ou une annulation. Le SMS est le canal fiable au Niger, où la couverture données est irrégulière hors des grandes villes : le chauffeur est prévenu même sans internet.",
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "phoneNumber",
+      "message"
+    ],
+    "properties": {
+      "phoneNumber": {
+        "type": "string",
+        "description": "Numéro du chauffeur au format international E.164 (ex. +22790112233)"
+      },
+      "message": {
+        "type": "string",
+        "description": "Texte du SMS, 319 caractères maximum"
+      }
+    },
+    "title": "NotifyDriverBySmsInput",
+    "description": "NotifyDriverBySms input payload"
+  },
+  "output": "SendRideSms",
+  "exposedToUI": true,
+  "usageDescription": "This action is triggered by:\n\n- **A passenger nudging a nearby driver**: tap on \"Prévenir par SMS\" next to a driver in the \"Chauffeurs disponibles\" list, while the ride is being matched\n  It sends that driver a text message in French with the ride reference, the pickup point, the destination and the price, so the driver is reached even where the mobile data network is weak.",
+  "actionNodes": [
+    {
+      "name": "SendRideSms",
+      "actionTypeId": "67e3e860e641e594d8b534bd",
+      "input": {
+        "sendTo": "",
+        "body": "Backend : tables de référence, offres, alertes et actions de tarification"
+      }
+    }
+  ]
+}

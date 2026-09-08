@@ -1,0 +1,122 @@
+{
+  "name": "CompanySettings",
+  "description": "L'identité légale de la société et les paramètres généraux de l'application",
+  "technicalDescription": "Table à ligne unique. Elle porte les mentions légales imprimées sur le reçu officiel (raison sociale, NIF, RCCM, taux de TVA, adresse), les numéros de contact utilisés par les boutons de l'app (support WhatsApp, secours), et les informations de version affichées dans la fenêtre de mise à jour. Tout est en base pour que l'exploitant corrige un numéro ou un taux sans intervention technique. Le taux de TVA est à 0 % pendant la phase Bêta nationale, comme la commission plateforme.",
+  "iconName": "building-2",
+  "displayColumn": "legalName",
+  "uniqueKey": ["legalName"],
+  "defaultUpsert": true,
+  "columns": [
+    {
+      "name": "legalName",
+      "type": "string",
+      "description": "Raison sociale complète imprimée sur le reçu"
+    },
+    {
+      "name": "brandName",
+      "type": "string",
+      "description": "Nom commercial affiché dans l'application"
+    },
+    {
+      "name": "tagline",
+      "type": "string",
+      "description": "Sous-titre de marque affiché sous le logo"
+    },
+    {
+      "name": "nif",
+      "type": "string",
+      "description": "Numéro d'identification fiscale de la société"
+    },
+    {
+      "name": "rccm",
+      "type": "string",
+      "description": "Numéro d'immatriculation au registre du commerce"
+    },
+    {
+      "name": "vatRatePercent",
+      "type": "number",
+      "description": "Taux de TVA appliqué sur les courses, en pourcentage"
+    },
+    {
+      "name": "addressLine",
+      "type": "string",
+      "description": "Adresse du siège imprimée sur le reçu"
+    },
+    {
+      "name": "cityLine",
+      "type": "string",
+      "description": "Ville et pays du siège"
+    },
+    {
+      "name": "contactPhone",
+      "type": "string",
+      "description": "Numéro de téléphone officiel de la société"
+    },
+    {
+      "name": "contactEmail",
+      "type": "string",
+      "description": "Adresse électronique officielle"
+    },
+    {
+      "name": "supportWhatsappNumber",
+      "type": "string",
+      "description": "Numéro WhatsApp du support client, joignable 7j/7"
+    },
+    {
+      "name": "emergencyNumber",
+      "type": "string",
+      "description": "Numéro des secours composé par le bouton SOS (17, Police Secours au Niger)"
+    },
+    {
+      "name": "supervisorAlertPhone",
+      "type": "string",
+      "description": "Numéro du superviseur prévenu par SMS à chaque alerte SOS"
+    },
+    {
+      "name": "logoUrl",
+      "type": "string",
+      "description": "Logo de la société, utilisé sur le reçu PDF"
+    },
+    {
+      "name": "appVersion",
+      "type": "string",
+      "description": "Version courante de l'application, affichée dans la fenêtre de mise à jour"
+    },
+    {
+      "name": "appReleaseNotes",
+      "type": "string",
+      "description": "Nouveautés de la version courante, affichées à l'utilisateur"
+    },
+    {
+      "name": "androidDownloadUrl",
+      "type": "string",
+      "description": "Lien de téléchargement de l'application Android, s'il existe ; vide, seule l'installation depuis le navigateur est proposée"
+    },
+    {
+      "name": "platformCommissionNotice",
+      "type": "string",
+      "description": "Message expliquant au chauffeur la politique de commission en vigueur"
+    }
+  ],
+  "seedData": [
+    {
+      "legalName": "BAREWA TAXI NIGER SARL",
+      "brandName": "BAREWA",
+      "tagline": "Barewa — la gazelle du Sahel",
+      "nif": "À renseigner",
+      "rccm": "À renseigner",
+      "vatRatePercent": 0,
+      "addressLine": "À renseigner",
+      "cityLine": "Niamey, Niger",
+      "contactPhone": "+227 00 00 00 00",
+      "contactEmail": "contact@barewa.ne",
+      "supportWhatsappNumber": "+22700000000",
+      "emergencyNumber": "17",
+      "supervisorAlertPhone": "",
+      "appVersion": "1.0.0",
+      "appReleaseNotes": "Première version nationale : commande de course, négociation du prix, suivi en direct, Studio 3D, paiements mobile money et reçu officiel.",
+      "androidDownloadUrl": "",
+      "platformCommissionNotice": "Phase Bêta nationale : BAREWA ne prélève aucune commission. Le chauffeur conserve 100 % de la course."
+    }
+  ]
+}

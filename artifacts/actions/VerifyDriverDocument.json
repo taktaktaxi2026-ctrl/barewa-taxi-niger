@@ -1,0 +1,151 @@
+{
+  "name": "VerifyDriverDocument",
+  "type": "dag",
+  "description": "Lit une pièce justificative de chauffeur (permis de conduire, carte nationale d'identité, carte grise, attestation d'assurance, visite technique) déposée en photo ou en PDF, en extrait les champs par reconnaissance de texte et rend un verdict de conformité avec un indice de confiance. Le résultat est destiné à être enregistré sur la ligne DriverDocuments correspondante.",
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "fileUrl",
+      "documentType"
+    ],
+    "properties": {
+      "fileUrl": {
+        "type": "string",
+        "description": "Fichier de la pièce à lire : photo ou PDF déposé par le chauffeur"
+      },
+      "documentType": {
+        "type": "string",
+        "description": "Nature de la pièce annoncée par le chauffeur (Permis de conduire, Carte nationale d'identité, Carte grise, Attestation d'assurance, Visite technique)"
+      },
+      "expectedHolderName": {
+        "type": "string",
+        "description": "Nom du chauffeur tel qu'inscrit dans son profil, à comparer au titulaire lu sur la pièce",
+        "default": ""
+      },
+      "expectedPlateNumber": {
+        "type": "string",
+        "description": "Immatriculation déclarée par le chauffeur, à comparer à celle lue sur une carte grise ou une assurance",
+        "default": ""
+      },
+      "todayDate": {
+        "type": "string",
+        "description": "Date du jour au format AAAA-MM-JJ, utilisée pour juger si la pièce est expirée",
+        "default": ""
+      }
+    },
+    "title": "VerifyDriverDocumentInput",
+    "description": "VerifyDriverDocument input payload"
+  },
+  "output": "ReadDriverDocument",
+  "exposedToUI": true,
+  "usageDescription": "This action is triggered by:\n\n- **A driver getting a document checked**: tap on \"Lecture automatique\" next to a document in \"Mes pièces\", then \"Lancer la lecture\" in the window that opens\n  It reads the licence, ID card, vehicle registration, insurance or roadworthiness certificate, fills in the number, holder name and dates, and gives a verdict the driver can correct before saving. Reading takes up to a minute and is never started on its own.",
+  "actionNodes": [
+    {
+      "name": "ReadDriverDocument",
+      "actionTypeId": "682350853569558fbe7e49e5",
+      "input": {
+        "modelName": "google-pro",
+        "temperature": 0,
+        "tools": [],
+        "files": [
+          {
+            "url": ""
+          }
+        ],
+        "instructions": "Tu contrôles les pièces justificatives des chauffeurs de BAREWA, plateforme VTC et taxi du Niger. Tu lis des documents officiels nigériens, souvent photographiés au téléphone, parfois de biais, froissés ou mal éclairés. Tu n'inventes jamais une valeur : un champ que tu ne lis pas clairement reste une chaîne vide et l'anomalie est signalée dans warnings. Les dates sont toujours rendues au format AAAA-MM-JJ. Les documents nigériens sont rédigés en français ; les noms peuvent être en graphie haoussa, zarma ou tamajaq, respecte l'orthographe exacte du document. Tu réponds uniquement selon le schéma structuré demandé.",
+        "prompt": "Analyse la pièce jointe et renseigne le schéma structuré.\n\nNature de pièce annoncée par le chauffeur : \nNom du chauffeur dans son profil : \nImmatriculation déclarée dans son profil : \nDate du jour : \n\nTravail attendu :\n1. Identifie la nature réelle du document et dis dans detectedDocumentType ce que tu vois réellement.\n2. Extrais les champs lisibles : numéro de pièce, nom du titulaire, date de naissance, date de délivrance, date d'expiration, autorité de délivrance, catégories de permis, immatriculation et marque/modèle du véhicule s'il s'agit d'une carte grise ou d'une assurance.\n3. Compare le nom lu au nom du profil et l'immatriculation lue à celle du profil. Toute divergence va dans warnings et fait basculer le verdict en Incohérente.\n4. Juge l'expiration : si la date d'expiration est antérieure à la date du jour, le verdict est Expirée.\n5. Si le document est trop flou, coupé ou sombre pour lire les champs essentiels, le verdict est Illisible.\n6. Si la nature réelle ne correspond pas à la nature annoncée, le verdict est Incohérente.\n7. Sinon, si tous les champs essentiels sont lus et cohérents, le verdict est « Lisible et conforme ».\n8. Donne un indice de confiance de 0 à 100 sur la qualité de ta lecture, et une note en français d'une à trois phrases expliquant ton verdict au contrôleur.",
+        "structuredOutputJsonSchema": {
+          "type": "object",
+          "required": [
+            "checkStatus",
+            "checkConfidence",
+            "checkNotes",
+            "detectedDocumentType",
+            "documentNumber",
+            "holderName",
+            "expiryDate",
+            "warnings"
+          ],
+          "properties": {
+            "checkStatus": {
+              "type": "string",
+              "enum": [
+                "Lisible et conforme",
+                "Illisible",
+                "Expirée",
+                "Incohérente"
+              ],
+              "description": "Verdict du contrôle de la pièce"
+            },
+            "checkConfidence": {
+              "type": "number",
+              "description": "Indice de confiance de la lecture, de 0 à 100"
+            },
+            "checkNotes": {
+              "type": "string",
+              "description": "Explication du verdict en français, une à trois phrases"
+            },
+            "detectedDocumentType": {
+              "type": "string",
+              "description": "Nature réelle du document telle que lue sur la pièce"
+            },
+            "documentNumber": {
+              "type": "string",
+              "description": "Numéro de la pièce, chaîne vide si illisible"
+            },
+            "holderName": {
+              "type": "string",
+              "description": "Nom complet du titulaire, chaîne vide si illisible"
+            },
+            "dateOfBirth": {
+              "type": "string",
+              "description": "Date de naissance au format AAAA-MM-JJ, chaîne vide si absente"
+            },
+            "issuedOn": {
+              "type": "string",
+              "description": "Date de délivrance au format AAAA-MM-JJ, chaîne vide si absente"
+            },
+            "expiryDate": {
+              "type": "string",
+              "description": "Date d'expiration au format AAAA-MM-JJ, chaîne vide si absente"
+            },
+            "issuingAuthority": {
+              "type": "string",
+              "description": "Autorité de délivrance mentionnée sur la pièce"
+            },
+            "vehiclePlate": {
+              "type": "string",
+              "description": "Immatriculation lue, chaîne vide si le document n'en porte pas"
+            },
+            "vehicleMakeModel": {
+              "type": "string",
+              "description": "Marque et modèle lus sur une carte grise"
+            },
+            "categories": {
+              "type": "array",
+              "description": "Catégories de permis mentionnées sur la pièce",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nameMatchesProfile": {
+              "type": "boolean",
+              "description": "Le nom lu correspond-il au nom du profil du chauffeur"
+            },
+            "plateMatchesProfile": {
+              "type": "boolean",
+              "description": "L'immatriculation lue correspond-elle à celle du profil du chauffeur"
+            },
+            "warnings": {
+              "type": "array",
+              "description": "Anomalies relevées pendant la lecture, en français",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

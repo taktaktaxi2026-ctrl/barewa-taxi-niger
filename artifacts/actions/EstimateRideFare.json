@@ -1,0 +1,153 @@
+{
+  "name": "EstimateRideFare",
+  "type": "code",
+  "description": "Calcule le prix d'une course en FCFA avant commande. Mesure la distance orthodromique entre le départ et l'arrivée, estime la durée selon la vitesse moyenne de circulation de la ville, applique la ligne de FareGrid correspondant à (ville, type de véhicule), ajoute la majoration de nuit (22h-5h) et de forte demande, puis déduit un éventuel code promotionnel validé dans PromoCodes. Renvoie une option chiffrée pour chaque type de véhicule disponible dans la ville, avec le nombre de chauffeurs en ligne et le délai d'arrivée estimé.",
+  "iconName": "calculator",
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "cityId",
+      "pickupLatitude",
+      "pickupLongitude",
+      "dropoffLatitude",
+      "dropoffLongitude"
+    ],
+    "properties": {
+      "cityId": {
+        "type": "number",
+        "description": "Identifiant de la ville dans laquelle se déroule la course"
+      },
+      "pickupLatitude": {
+        "type": "number",
+        "description": "Latitude du point de départ"
+      },
+      "pickupLongitude": {
+        "type": "number",
+        "description": "Longitude du point de départ"
+      },
+      "dropoffLatitude": {
+        "type": "number",
+        "description": "Latitude du point d'arrivée"
+      },
+      "dropoffLongitude": {
+        "type": "number",
+        "description": "Longitude du point d'arrivée"
+      },
+      "vehicleTypeId": {
+        "type": "number",
+        "description": "Limiter l'estimation à ce seul type de véhicule ; omis, tous les types disponibles dans la ville sont chiffrés"
+      },
+      "promoCode": {
+        "type": "string",
+        "description": "Code promotionnel saisi par le passager, à valider et appliquer"
+      },
+      "requestedAt": {
+        "type": "string",
+        "description": "Date et heure de la course au format ISO 8601 ; par défaut l'instant présent. Détermine la majoration de nuit et d'heure de pointe."
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "distanceKm",
+      "durationMin",
+      "options"
+    ],
+    "properties": {
+      "distanceKm": {
+        "type": "number",
+        "description": "Distance estimée du trajet en kilomètres"
+      },
+      "durationMin": {
+        "type": "number",
+        "description": "Durée estimée du trajet en minutes"
+      },
+      "cityName": {
+        "type": "string",
+        "description": "Nom de la ville de la course"
+      },
+      "isNight": {
+        "type": "boolean",
+        "description": "La course tombe-t-elle dans la plage de nuit majorée"
+      },
+      "isPeak": {
+        "type": "boolean",
+        "description": "La course tombe-t-elle dans une heure de pointe majorée"
+      },
+      "promoValid": {
+        "type": "boolean",
+        "description": "Le code promotionnel fourni est-il applicable"
+      },
+      "promoMessage": {
+        "type": "string",
+        "description": "Explication du sort réservé au code promotionnel, à afficher au passager"
+      },
+      "options": {
+        "type": "array",
+        "description": "Une option chiffrée par type de véhicule",
+        "items": {
+          "type": "object",
+          "properties": {
+            "vehicleTypeId": {
+              "type": "number"
+            },
+            "vehicleTypeName": {
+              "type": "string"
+            },
+            "vehicleLocalName": {
+              "type": "string"
+            },
+            "modelKey": {
+              "type": "string"
+            },
+            "seats": {
+              "type": "number"
+            },
+            "hasAirConditioning": {
+              "type": "boolean"
+            },
+            "fareId": {
+              "type": "number"
+            },
+            "baseFare": {
+              "type": "number"
+            },
+            "fareBeforeDiscount": {
+              "type": "number"
+            },
+            "surgePercent": {
+              "type": "number"
+            },
+            "discountAmount": {
+              "type": "number"
+            },
+            "finalFare": {
+              "type": "number"
+            },
+            "platformCommission": {
+              "type": "number"
+            },
+            "driverPayout": {
+              "type": "number"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "onlineDriverCount": {
+              "type": "number"
+            },
+            "etaMin": {
+              "type": "number"
+            },
+            "isAvailable": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  },
+  "exposedToUI": true,
+  "usageDescription": "This action is triggered by:\n\n- **A passenger pricing a trip**: as soon as both the pickup and the drop-off point are chosen on the \"Commander\" screen, and again each time the passenger taps \"Appliquer\" next to the promo code field\n  It fills the vehicle comparison cards with the price in FCFA, the waiting time, the number of drivers online and the promo code verdict, so the passenger can compare a tricycle, a Starlet, a Yaris and a Corolla before ordering."
+}

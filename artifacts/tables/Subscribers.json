@@ -1,0 +1,126 @@
+{
+  "name": "Subscribers",
+  "description": "Les passagers abonnés aux trajets réguliers d'un chauffeur",
+  "technicalDescription": "Clientèle fidélisée du chauffeur : navette domicile-bureau, ramassage scolaire, trajet de marché hebdomadaire. Le chauffeur prévient tous ses abonnés du matin en un geste (NotifySubscribersDeparture, qui envoie un SMS et prépare le lien WhatsApp). Le passager peut exister comme profil dans l'app ou n'être qu'un contact téléphonique : passengerId est facultatif, seuls le nom et le numéro sont obligatoires.",
+  "iconName": "users-round",
+  "displayColumn": "contactName",
+  "columns": [
+    {
+      "name": "contactName",
+      "type": "string",
+      "description": "Nom de l'abonné tel que le chauffeur le connaît"
+    },
+    {
+      "name": "driverId",
+      "type": "number",
+      "description": "Chauffeur auprès de qui l'abonné est fidélisé",
+      "reference": {
+        "table": "DriverProfile",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "passengerId",
+      "type": "number",
+      "description": "Profil passager de l'abonné, s'il utilise l'application",
+      "reference": {
+        "table": "PassengerProfile",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "phoneNumber",
+      "type": "string",
+      "description": "Numéro de l'abonné au format international, pour le SMS de départ"
+    },
+    {
+      "name": "whatsappNumber",
+      "type": "string",
+      "description": "Numéro WhatsApp de l'abonné, s'il diffère"
+    },
+    {
+      "name": "cityId",
+      "type": "number",
+      "description": "Ville du trajet régulier",
+      "reference": {
+        "table": "Cities",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "pickupLabel",
+      "type": "string",
+      "description": "Point de ramassage habituel"
+    },
+    {
+      "name": "pickupLatitude",
+      "type": "number",
+      "description": "Latitude du point de ramassage"
+    },
+    {
+      "name": "pickupLongitude",
+      "type": "number",
+      "description": "Longitude du point de ramassage"
+    },
+    {
+      "name": "dropoffLabel",
+      "type": "string",
+      "description": "Destination habituelle"
+    },
+    {
+      "name": "dropoffLatitude",
+      "type": "number",
+      "description": "Latitude de la destination"
+    },
+    {
+      "name": "dropoffLongitude",
+      "type": "number",
+      "description": "Longitude de la destination"
+    },
+    {
+      "name": "tripKind",
+      "type": "string",
+      "description": "Nature du trajet régulier",
+      "enum": [
+        "Domicile - Bureau",
+        "Navette scolaire",
+        "Marché",
+        "Lieu de culte",
+        "Autre"
+      ]
+    },
+    {
+      "name": "activeDays",
+      "type": "string",
+      "description": "Jours de la semaine concernés, séparés par des virgules (Lundi, Mardi, …)"
+    },
+    {
+      "name": "pickupTime",
+      "type": "time",
+      "description": "Heure habituelle de ramassage, en heure locale du Niger"
+    },
+    {
+      "name": "agreedFare",
+      "type": "number",
+      "description": "Prix convenu de gré à gré pour ce trajet régulier, en FCFA"
+    },
+    {
+      "name": "isActive",
+      "type": "boolean",
+      "description": "L'abonnement est-il en cours"
+    },
+    {
+      "name": "lastNotifiedAt",
+      "type": "datetime",
+      "description": "Dernière fois que le chauffeur a prévenu cet abonné de son départ"
+    },
+    {
+      "name": "notes",
+      "type": "string",
+      "description": "Consignes particulières (portail, enfant à accompagner, bagages)"
+    }
+  ]
+}
