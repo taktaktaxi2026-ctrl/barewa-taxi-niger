@@ -1,0 +1,11 @@
+{
+  "name": "BarewaAssistantChat",
+  "agentId": "BarewaAssistant",
+  "isPersistent": true,
+  "hideToolsUi": true,
+  "initialMessages": [
+    {
+      "content": "Bonjour 🦌 Je suis Maya, votre assistante BAREWA. Dites-moi où vous voulez aller, ou posez-moi une question sur les prix, les véhicules ou le paiement — en français, en haoussa ou en zarma."
+    }
+  ]
+}

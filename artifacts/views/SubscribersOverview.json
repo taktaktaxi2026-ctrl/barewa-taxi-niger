@@ -1,0 +1,65 @@
+{
+  "name": "SubscribersOverview",
+  "description": "Les abonnés aux trajets réguliers, avec leur chauffeur et leur ville",
+  "technicalDescription": "Vue de lecture de la clientèle fidélisée, utilisée par l'onglet Abonnés du chauffeur et par la supervision. Elle joint DriverProfile, PassengerProfile et Cities pour livrer les libellés en une requête. L'ajout, la modification et la notification d'un abonné s'écrivent sur la table Subscribers.",
+  "query": {
+    "from": { "table": "Subscribers", "as": "s" },
+    "join": [
+      {
+        "table": "DriverProfile",
+        "as": "d",
+        "type": "left",
+        "on": [{ "left": "s.driverId", "right": "d.id" }]
+      },
+      {
+        "table": "PassengerProfile",
+        "as": "p",
+        "type": "left",
+        "on": [{ "left": "s.passengerId", "right": "p.id" }]
+      },
+      {
+        "table": "Cities",
+        "as": "c",
+        "type": "left",
+        "on": [{ "left": "s.cityId", "right": "c.id" }]
+      }
+    ],
+    "select": [
+      { "column": "s.id", "as": "subscriberId" },
+      { "column": "s.contactName", "as": "contactName" },
+      { "column": "s.phoneNumber", "as": "phoneNumber" },
+      { "column": "s.whatsappNumber", "as": "whatsappNumber" },
+      { "column": "s.pickupLabel", "as": "pickupLabel" },
+      { "column": "s.pickupLatitude", "as": "pickupLatitude" },
+      { "column": "s.pickupLongitude", "as": "pickupLongitude" },
+      { "column": "s.dropoffLabel", "as": "dropoffLabel" },
+      { "column": "s.dropoffLatitude", "as": "dropoffLatitude" },
+      { "column": "s.dropoffLongitude", "as": "dropoffLongitude" },
+      { "column": "s.tripKind", "as": "tripKind" },
+      { "column": "s.activeDays", "as": "activeDays" },
+      { "column": "s.pickupTime", "as": "pickupTime" },
+      { "column": "s.agreedFare", "as": "agreedFare" },
+      { "column": "s.isActive", "as": "isActive" },
+      { "column": "s.lastNotifiedAt", "as": "lastNotifiedAt" },
+      { "column": "s.notes", "as": "notes" },
+      { "column": "s.driverId", "as": "driverId" },
+      { "column": "s.passengerId", "as": "passengerId" },
+      { "column": "s.cityId", "as": "cityId" },
+      { "column": "d.fullName", "as": "driverName" },
+      { "column": "d.phoneNumber", "as": "driverPhone" },
+      { "column": "p.fullName", "as": "passengerName" },
+      { "column": "p.profilePhotoUrl", "as": "passengerPhotoUrl" },
+      { "column": "c.name", "as": "cityName" }
+    ],
+    "orderBy": [{ "column": "s.pickupTime", "direction": "asc" }],
+    "limit": 500
+  },
+  "calculatedColumns": [
+    {
+      "name": "routeLabel",
+      "type": "string",
+      "description": "Trajet régulier résumé sous la forme « départ → arrivée »",
+      "expression": "(item.pickupLabel || '?') + ' → ' + (item.dropoffLabel || '?')"
+    }
+  ]
+}

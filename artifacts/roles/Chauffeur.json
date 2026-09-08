@@ -1,0 +1,4 @@
+{
+  "name": "Chauffeur",
+  "description": "Le conducteur de taxi, de tricycle ou de berline. Il se met en ligne, reçoit et accepte les demandes de course autour de lui, fait avancer le statut du trajet jusqu'à la fin, encaisse en espèces ou vérifie le règlement mobile money, et suit ses gains nets en FCFA. Il gère sa fiche véhicule dans le Studio 3D — couleur de carrosserie, accents, bâche, panneau de toit —, importe ou photographie son véhicule pour le projeter sur le modèle 3D, et dépose ses pièces (permis, carte d'identité, carte grise, assurance) pour vérification automatique."
+}

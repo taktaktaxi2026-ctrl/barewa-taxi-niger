@@ -1,0 +1,71 @@
+{
+  "name": "SosAlertsOverview",
+  "description": "Les alertes d'urgence avec leur ville, leur course et le chauffeur concerné",
+  "technicalDescription": "Vue de lecture du journal SOS pour la Vue Globale du superviseur : chaque alerte est présentée avec la ville, la référence de course en cours au moment du déclenchement et le chauffeur alors affecté, afin de pouvoir rappeler les deux parties immédiatement. La prise en charge et la clôture s'écrivent sur la table SosAlerts.",
+  "query": {
+    "from": { "table": "SosAlerts", "as": "s" },
+    "join": [
+      {
+        "table": "Cities",
+        "as": "c",
+        "type": "left",
+        "on": [{ "left": "s.cityId", "right": "c.id" }]
+      },
+      {
+        "table": "Rides",
+        "as": "r",
+        "type": "left",
+        "on": [{ "left": "s.rideId", "right": "r.id" }]
+      },
+      {
+        "table": "DriverProfile",
+        "as": "d",
+        "type": "left",
+        "on": [{ "left": "r.driverId", "right": "d.id" }]
+      }
+    ],
+    "select": [
+      { "column": "s.id", "as": "alertId" },
+      { "column": "s.reference", "as": "reference" },
+      { "column": "s.triggeredByEmail", "as": "triggeredByEmail" },
+      { "column": "s.triggeredByRole", "as": "triggeredByRole" },
+      { "column": "s.triggeredByName", "as": "triggeredByName" },
+      { "column": "s.triggeredByPhone", "as": "triggeredByPhone" },
+      { "column": "s.kind", "as": "kind" },
+      { "column": "s.status", "as": "status" },
+      { "column": "s.latitude", "as": "latitude" },
+      { "column": "s.longitude", "as": "longitude" },
+      { "column": "s.accuracyMeters", "as": "accuracyMeters" },
+      { "column": "s.notifiedContacts", "as": "notifiedContacts" },
+      { "column": "s.resolvedBy", "as": "resolvedBy" },
+      { "column": "s.resolvedAt", "as": "resolvedAt" },
+      { "column": "s.resolutionNotes", "as": "resolutionNotes" },
+      { "column": "s.cityId", "as": "cityId" },
+      { "column": "s.rideId", "as": "rideId" },
+      { "column": "c.name", "as": "cityName" },
+      { "column": "c.region", "as": "regionName" },
+      { "column": "r.reference", "as": "rideReference" },
+      { "column": "r.pickupLabel", "as": "pickupLabel" },
+      { "column": "r.dropoffLabel", "as": "dropoffLabel" },
+      { "column": "d.fullName", "as": "driverName" },
+      { "column": "d.phoneNumber", "as": "driverPhone" },
+      { "column": "d.plateNumber", "as": "driverPlate" }
+    ],
+    "orderBy": [{ "column": "s.id", "direction": "desc" }],
+    "limit": 300
+  },
+  "calculatedColumns": [
+    {
+      "name": "isOpen",
+      "type": "boolean",
+      "description": "L'alerte demande encore une intervention",
+      "expression": "item.status === 'Ouverte' || item.status === 'Prise en charge'"
+    },
+    {
+      "name": "mapsUrl",
+      "type": "string",
+      "description": "Lien Google Maps vers la position figée au déclenchement",
+      "expression": "'https://maps.google.com/?q=' + (item.latitude || 0) + ',' + (item.longitude || 0)"
+    }
+  ]
+}

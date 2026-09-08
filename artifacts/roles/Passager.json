@@ -1,0 +1,4 @@
+{
+  "name": "Passager",
+  "description": "Le client qui commande une course. Il choisit son point de départ et d'arrivée parmi les repères de sa ville, compare les quatre types de véhicules et leur prix en FCFA, commande, suit son chauffeur en direct sur la carte, inspecte le véhicule en 3D et sur sa vraie photo, repère le lieu de rendez-vous en Street View 360°, appelle ou écrit au chauffeur sur WhatsApp, paie par mobile money ou en espèces, puis note la course. Il gère aussi ses lieux favoris, sa langue d'interface et son moyen de paiement préféré."
+}

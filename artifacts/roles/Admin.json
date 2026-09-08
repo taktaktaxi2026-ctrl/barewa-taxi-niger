@@ -1,0 +1,4 @@
+{
+  "name": "Admin",
+  "description": "L'exploitant de BAREWA. Il pilote l'activité nationale : volume de courses et recettes par ville et par région, supervision des courses en cours, annuaire et carte des chauffeurs. Il ouvre ou ferme le service dans une ville, gère le référentiel des repères et carrefours, fixe la grille tarifaire en FCFA par ville et par type de véhicule, contrôle et valide les pièces des chauffeurs, suit les encaissements mobile money et les versements aux chauffeurs, et crée les codes promotionnels."
+}
