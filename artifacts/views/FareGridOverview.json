@@ -1,0 +1,138 @@
+{
+  "name": "FareGridOverview",
+  "query": {
+    "from": {
+      "table": "FareGrid",
+      "as": "f"
+    },
+    "join": [
+      {
+        "table": "Cities",
+        "as": "c",
+        "type": "left",
+        "on": [
+          {
+            "left": "f.cityId",
+            "right": "c.id"
+          }
+        ]
+      },
+      {
+        "table": "VehicleTypes",
+        "as": "v",
+        "type": "left",
+        "on": [
+          {
+            "left": "f.vehicleTypeId",
+            "right": "v.id"
+          }
+        ]
+      }
+    ],
+    "select": [
+      {
+        "column": "f.id",
+        "as": "fareId"
+      },
+      {
+        "column": "f.label",
+        "as": "label"
+      },
+      {
+        "column": "f.baseFare",
+        "as": "baseFare"
+      },
+      {
+        "column": "f.pricePerKm",
+        "as": "pricePerKm"
+      },
+      {
+        "column": "f.pricePerMinute",
+        "as": "pricePerMinute"
+      },
+      {
+        "column": "f.minimumFare",
+        "as": "minimumFare"
+      },
+      {
+        "column": "f.cancellationFee",
+        "as": "cancellationFee"
+      },
+      {
+        "column": "f.nightSurchargePercent",
+        "as": "nightSurchargePercent"
+      },
+      {
+        "column": "f.peakSurchargePercent",
+        "as": "peakSurchargePercent"
+      },
+      {
+        "column": "f.driverCommissionPercent",
+        "as": "driverCommissionPercent"
+      },
+      {
+        "column": "f.isActive",
+        "as": "isActive"
+      },
+      {
+        "column": "f.cityId",
+        "as": "cityId"
+      },
+      {
+        "column": "f.vehicleTypeId",
+        "as": "vehicleTypeId"
+      },
+      {
+        "column": "c.name",
+        "as": "cityName"
+      },
+      {
+        "column": "c.region",
+        "as": "regionName"
+      },
+      {
+        "column": "v.name",
+        "as": "vehicleTypeName"
+      },
+      {
+        "column": "v.localName",
+        "as": "vehicleLocalName"
+      },
+      {
+        "column": "v.modelKey",
+        "as": "vehicleModelKey"
+      },
+      {
+        "column": "v.seats",
+        "as": "vehicleSeats"
+      },
+      {
+        "column": "v.hasAirConditioning",
+        "as": "vehicleHasAirConditioning"
+      },
+      {
+        "column": "v.sortOrder",
+        "as": "vehicleSortOrder"
+      }
+    ],
+    "orderBy": [
+      {
+        "column": "c.name",
+        "direction": "asc"
+      },
+      {
+        "column": "v.sortOrder",
+        "direction": "asc"
+      }
+    ],
+    "limit": 500
+  },
+  "calculatedColumns": [
+    {
+      "name": "exampleFare5Km",
+      "type": "number",
+      "expression": "Math.max(item.minimumFare || 0, Math.round((item.baseFare || 0) + 5 * (item.pricePerKm || 0) + 15 * (item.pricePerMinute || 0)))",
+      "description": "Prix indicatif d'une course de 5 km en 15 minutes, en FCFA"
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+{
+  "name": "GenerateRideReceipt",
+  "type": "dag",
+  "description": "Produit le reçu officiel de transport BAREWA en PDF pour une course terminée : mentions légales de la société (raison sociale, NIF, RCCM), numéro de reçu, détail du trajet, ventilation du montant en FCFA avec la TVA, moyen de paiement et référence de transaction. Le même PDF sert à l'aperçu, au téléchargement et à l'envoi — il n'existe qu'un seul modèle.",
+  "iconName": "receipt-text",
+  "exposedToUI": true,
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "receiptNumber",
+      "rideReference",
+      "issuedOn",
+      "passengerName",
+      "driverName",
+      "pickupLabel",
+      "dropoffLabel",
+      "totalAmount"
+    ],
+    "properties": {
+      "receiptNumber": {
+        "type": "string",
+        "description": "Numéro du reçu officiel (ex. REC-2026-000143)"
+      },
+      "rideReference": {
+        "type": "string",
+        "description": "Référence de la course (ex. BRW-4F92K)"
+      },
+      "issuedOn": {
+        "type": "string",
+        "description": "Date et heure d'émission en heure du Niger, déjà formatées pour l'impression (ex. 07/09/2026 à 18:42)"
+      },
+      "cityName": {
+        "type": "string",
+        "description": "Ville de la course",
+        "default": ""
+      },
+      "passengerName": {
+        "type": "string",
+        "description": "Nom du passager"
+      },
+      "passengerPhone": {
+        "type": "string",
+        "description": "Téléphone du passager",
+        "default": ""
+      },
+      "driverName": {
+        "type": "string",
+        "description": "Nom du chauffeur"
+      },
+      "driverPhone": {
+        "type": "string",
+        "description": "Téléphone du chauffeur",
+        "default": ""
+      },
+      "vehicleLabel": {
+        "type": "string",
+        "description": "Véhicule et immatriculation (ex. Toyota Starlet · NI 4821 AB)",
+        "default": ""
+      },
+      "pickupLabel": {
+        "type": "string",
+        "description": "Point de départ"
+      },
+      "dropoffLabel": {
+        "type": "string",
+        "description": "Point d'arrivée"
+      },
+      "distanceLabel": {
+        "type": "string",
+        "description": "Distance parcourue déjà formatée (ex. 7,4 km)",
+        "default": ""
+      },
+      "durationLabel": {
+        "type": "string",
+        "description": "Durée du trajet déjà formatée (ex. 21 min)",
+        "default": ""
+      },
+      "baseAmountLabel": {
+        "type": "string",
+        "description": "Montant hors remise, formaté en FCFA avec séparateur de milliers",
+        "default": ""
+      },
+      "discountLabel": {
+        "type": "string",
+        "description": "Remise accordée, formatée en FCFA ; chaîne vide s'il n'y en a pas",
+        "default": ""
+      },
+      "surchargeLabel": {
+        "type": "string",
+        "description": "Majoration appliquée (nuit, heure de pointe), formatée ; chaîne vide s'il n'y en a pas",
+        "default": ""
+      },
+      "vatRateLabel": {
+        "type": "string",
+        "description": "Taux de TVA affiché (ex. 0 %)",
+        "default": "0 %"
+      },
+      "vatAmountLabel": {
+        "type": "string",
+        "description": "Montant de TVA, formaté en FCFA",
+        "default": "0 FCFA"
+      },
+      "totalAmount": {
+        "type": "string",
+        "description": "Montant total réglé, formaté en FCFA avec séparateur de milliers (ex. 2 500 FCFA)"
+      },
+      "paymentMethod": {
+        "type": "string",
+        "description": "Moyen de paiement utilisé",
+        "default": ""
+      },
+      "transactionReference": {
+        "type": "string",
+        "description": "Référence de transaction de l'opérateur mobile money",
+        "default": ""
+      },
+      "paymentStatus": {
+        "type": "string",
+        "description": "État du règlement au moment de l'émission",
+        "default": ""
+      },
+      "companyLegalName": {
+        "type": "string",
+        "description": "Raison sociale de la société",
+        "default": "BAREWA TAXI NIGER SARL"
+      },
+      "companyNif": {
+        "type": "string",
+        "description": "Numéro d'identification fiscale",
+        "default": ""
+      },
+      "companyRccm": {
+        "type": "string",
+        "description": "Numéro au registre du commerce",
+        "default": ""
+      },
+      "companyAddress": {
+        "type": "string",
+        "description": "Adresse du siège",
+        "default": ""
+      },
+      "companyCity": {
+        "type": "string",
+        "description": "Ville et pays du siège",
+        "default": "Niamey, Niger"
+      },
+      "companyPhone": {
+        "type": "string",
+        "description": "Téléphone officiel de la société",
+        "default": ""
+      },
+      "companyEmail": {
+        "type": "string",
+        "description": "Adresse électronique officielle",
+        "default": ""
+      }
+    }
+  },
+  "output": "RenderReceiptPdf",
+  "actionNodes": [
+    {
+      "name": "ComposeReceiptHtml",
+      "actionTypeId": "6915f163eb0d51f2a8c93125",
+      "input": {
+        "escapeHtml": false,
+        "input": {
+          "receiptNumber": "",
+          "rideReference": "",
+          "issuedOn": "",
+          "cityName": "",
+          "passengerName": "",
+          "passengerPhone": "",
+          "driverName": "",
+          "driverPhone": "",
+          "vehicleLabel": "",
+          "pickupLabel": "",
+          "dropoffLabel": "",
+          "distanceLabel": "",
+          "durationLabel": "",
+          "baseAmountLabel": "",
+          "discountLabel": "",
+          "surchargeLabel": "",
+          "vatRateLabel": "",
+          "vatAmountLabel": "",
+          "totalAmount": "",
+          "paymentMethod": "",
+          "transactionReference": "",
+          "paymentStatus": "",
+          "companyLegalName": "",
+          "companyNif": "",
+          "companyRccm": "",
+          "companyAddress": "",
+          "companyCity": "",
+          "companyPhone": "",
+          "companyEmail": ""
+        },
+        "template": "<!DOCTYPE html><html lang=\"fr\"><head><meta charset=\"utf-8\"><title>Recu </title></head><body style=\"margin:0;padding:28px;font-family:Helvetica,Arial,sans-serif;color:#14181F;background:#FFFFFF;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;\"><tr><td style=\"padding-bottom:14px;border-bottom:3px solid #F5B000;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;\"><tr><td style=\"vertical-align:top;\"><div style=\"font-size:26px;font-weight:bold;letter-spacing:2px;color:#0A0D14;\">BAREWA</div><div style=\"font-size:11px;color:#6B7280;padding-top:2px;\">Barewa &mdash; la gazelle du Sahel</div></td><td style=\"vertical-align:top;text-align:right;\"><div style=\"font-size:15px;font-weight:bold;color:#0A0D14;\">RE&Ccedil;U DE TRANSPORT</div><div style=\"font-size:12px;color:#6B7280;padding-top:3px;\">N&deg; </div><div style=\"font-size:12px;color:#6B7280;\">&Eacute;mis le </div></td></tr></table></td></tr><tr><td style=\"padding-top:14px;font-size:11px;color:#4B5563;line-height:1.6;\">#if companyAddress &mdash; /if#if companyCity, /if<br>#if companyNifNIF :  &nbsp;&middot;&nbsp; /if#if companyRccmRCCM : /if#if companyPhone<br>T&eacute;l. : /if#if companyEmail &nbsp;&middot;&nbsp; /if</td></tr><tr><td style=\"padding-top:20px;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;border:1px solid #E5E7EB;\"><tr><td width=\"50%\" style=\"padding:12px 14px;border-right:1px solid #E5E7EB;border-bottom:1px solid #E5E7EB;vertical-align:top;\"><div style=\"font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#9CA3AF;\">Passager</div><div style=\"font-size:13px;font-weight:bold;padding-top:4px;\"></div><div style=\"font-size:11px;color:#6B7280;\"></div></td><td width=\"50%\" style=\"padding:12px 14px;border-bottom:1px solid #E5E7EB;vertical-align:top;\"><div style=\"font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#9CA3AF;\">Chauffeur</div><div style=\"font-size:13px;font-weight:bold;padding-top:4px;\"></div><div style=\"font-size:11px;color:#6B7280;\"></div><div style=\"font-size:11px;color:#6B7280;\"></div></td></tr><tr><td colspan=\"2\" style=\"padding:12px 14px;border-bottom:1px solid #E5E7EB;\"><div style=\"font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#9CA3AF;\">Trajet#if cityName &mdash; /if</div><div style=\"font-size:13px;padding-top:5px;\"><strong>D&eacute;part :</strong> </div><div style=\"font-size:13px;padding-top:3px;\"><strong>Arriv&eacute;e :</strong> </div><div style=\"font-size:11px;color:#6B7280;padding-top:5px;\">Course #if distanceLabel &nbsp;&middot;&nbsp; /if#if durationLabel &nbsp;&middot;&nbsp; /if</div></td></tr><tr><td colspan=\"2\" style=\"padding:0;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;\">#if baseAmountLabel<tr><td style=\"padding:8px 14px;font-size:12px;color:#4B5563;\">Montant de la course</td><td style=\"padding:8px 14px;font-size:12px;text-align:right;\"></td></tr>/if#if surchargeLabel<tr><td style=\"padding:8px 14px;font-size:12px;color:#4B5563;\">Majoration</td><td style=\"padding:8px 14px;font-size:12px;text-align:right;\"></td></tr>/if#if discountLabel<tr><td style=\"padding:8px 14px;font-size:12px;color:#4B5563;\">Remise</td><td style=\"padding:8px 14px;font-size:12px;text-align:right;color:#0E7C4A;\">- </td></tr>/if<tr><td style=\"padding:8px 14px;font-size:12px;color:#4B5563;\">TVA ()</td><td style=\"padding:8px 14px;font-size:12px;text-align:right;\"></td></tr><tr><td style=\"padding:14px;font-size:15px;font-weight:bold;background:#0A0D14;color:#FFFFFF;\">TOTAL R&Eacute;GL&Eacute;</td><td style=\"padding:14px;font-size:19px;font-weight:bold;text-align:right;background:#0A0D14;color:#F5B000;\"></td></tr></table></td></tr></table></td></tr><tr><td style=\"padding-top:14px;font-size:12px;color:#4B5563;line-height:1.7;\">#if paymentMethod<strong>Moyen de paiement :</strong> <br>/if#if transactionReference<strong>R&eacute;f&eacute;rence de transaction :</strong> <br>/if#if paymentStatus<strong>&Eacute;tat du r&egrave;glement :</strong> /if</td></tr><tr><td style=\"padding-top:26px;border-top:1px solid #E5E7EB;font-size:10px;color:#9CA3AF;line-height:1.6;text-align:center;\">Re&ccedil;u &eacute;mis par . Document g&eacute;n&eacute;r&eacute; automatiquement, valable sans signature.<br>Merci d'avoir voyag&eacute; avec BAREWA.</td></tr></table></body></html>"
+      }
+    },
+    {
+      "name": "RenderReceiptPdf",
+      "actionTypeId": "68a303f685ac9c0e925d50fc",
+      "input": {
+        "html": "",
+        "pdfFilename": "recu-barewa-.pdf"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "name": "ComposeToRender",
+      "source": "ComposeReceiptHtml",
+      "target": "RenderReceiptPdf"
+    }
+  ],
+  "usageDescription": "This action is triggered by:\n\n- **A passenger asking for their receipt**: the \"Télécharger le reçu officiel BAREWA\" button at the end of a paid ride in the \"En cours\" tab, and the \"Voir la facture\" button on a finished ride in the \"Historique\" tab\n  The receipt is produced only once: afterwards the same PDF is reused for the on-screen preview and for the download."
+}

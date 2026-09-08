@@ -1,0 +1,117 @@
+{
+  "name": "DriverEarnings",
+  "query": {
+    "from": {
+      "table": "Rides",
+      "as": "r"
+    },
+    "join": [
+      {
+        "table": "DriverProfile",
+        "as": "d",
+        "type": "inner",
+        "on": [
+          {
+            "left": "r.driverId",
+            "right": "d.id"
+          }
+        ]
+      },
+      {
+        "table": "Cities",
+        "as": "c",
+        "type": "left",
+        "on": [
+          {
+            "left": "d.cityId",
+            "right": "c.id"
+          }
+        ]
+      }
+    ],
+    "select": [
+      {
+        "column": "d.id",
+        "as": "driverId"
+      },
+      {
+        "column": "d.fullName",
+        "as": "driverName"
+      },
+      {
+        "column": "d.email",
+        "as": "email"
+      },
+      {
+        "column": "d.plateNumber",
+        "as": "plateNumber"
+      },
+      {
+        "column": "c.name",
+        "as": "cityName"
+      },
+      {
+        "column": "r.id",
+        "function": "count",
+        "as": "completedRides"
+      },
+      {
+        "column": "r.finalFare",
+        "function": "sum",
+        "as": "grossRevenue"
+      },
+      {
+        "column": "r.driverPayout",
+        "function": "sum",
+        "as": "netEarnings"
+      },
+      {
+        "column": "r.platformCommission",
+        "function": "sum",
+        "as": "platformCommission"
+      },
+      {
+        "column": "r.distanceKm",
+        "function": "sum",
+        "as": "totalDistanceKm"
+      },
+      {
+        "column": "r.ratingByPassenger",
+        "function": "avg",
+        "as": "averageRating"
+      },
+      {
+        "column": "r.completedAt",
+        "function": "max",
+        "as": "lastRideAt"
+      }
+    ],
+    "where": {
+      "column": "r.status",
+      "operator": "=",
+      "value": "Terminée"
+    },
+    "groupBy": [
+      "d.id",
+      "d.fullName",
+      "d.email",
+      "d.plateNumber",
+      "c.name"
+    ],
+    "orderBy": [
+      {
+        "column": "netEarnings",
+        "direction": "desc"
+      }
+    ],
+    "limit": 500
+  },
+  "calculatedColumns": [
+    {
+      "name": "averageFare",
+      "type": "number",
+      "expression": "item.completedRides ? Math.round((item.grossRevenue || 0) / item.completedRides) : 0",
+      "description": "Recette moyenne par course terminée, en FCFA"
+    }
+  ]
+}

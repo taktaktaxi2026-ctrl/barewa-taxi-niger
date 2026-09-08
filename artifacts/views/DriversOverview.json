@@ -1,0 +1,184 @@
+{
+  "name": "DriversOverview",
+  "query": {
+    "from": {
+      "table": "DriverProfile",
+      "as": "d"
+    },
+    "join": [
+      {
+        "table": "Cities",
+        "as": "c",
+        "type": "left",
+        "on": [
+          {
+            "left": "d.cityId",
+            "right": "c.id"
+          }
+        ]
+      },
+      {
+        "table": "VehicleTypes",
+        "as": "v",
+        "type": "left",
+        "on": [
+          {
+            "left": "d.vehicleTypeId",
+            "right": "v.id"
+          }
+        ]
+      }
+    ],
+    "select": [
+      {
+        "column": "d.id",
+        "as": "driverId"
+      },
+      {
+        "column": "d.email",
+        "as": "email"
+      },
+      {
+        "column": "d.fullName",
+        "as": "fullName"
+      },
+      {
+        "column": "d.phoneNumber",
+        "as": "phoneNumber"
+      },
+      {
+        "column": "d.whatsappNumber",
+        "as": "whatsappNumber"
+      },
+      {
+        "column": "d.profilePhotoUrl",
+        "as": "profilePhotoUrl"
+      },
+      {
+        "column": "d.plateNumber",
+        "as": "plateNumber"
+      },
+      {
+        "column": "d.vehicleColor",
+        "as": "vehicleColor"
+      },
+      {
+        "column": "d.vehicleYear",
+        "as": "vehicleYear"
+      },
+      {
+        "column": "d.vehiclePhotoUrl",
+        "as": "vehiclePhotoUrl"
+      },
+      {
+        "column": "d.vehicle3DConfig",
+        "as": "vehicle3DConfig"
+      },
+      {
+        "column": "d.verificationStatus",
+        "as": "verificationStatus"
+      },
+      {
+        "column": "d.spokenLanguages",
+        "as": "spokenLanguages"
+      },
+      {
+        "column": "d.acceptedPaymentMethods",
+        "as": "acceptedPaymentMethods"
+      },
+      {
+        "column": "d.isOnline",
+        "as": "isOnline"
+      },
+      {
+        "column": "d.currentLatitude",
+        "as": "currentLatitude"
+      },
+      {
+        "column": "d.currentLongitude",
+        "as": "currentLongitude"
+      },
+      {
+        "column": "d.lastSeenAt",
+        "as": "lastSeenAt"
+      },
+      {
+        "column": "d.rating",
+        "as": "rating"
+      },
+      {
+        "column": "d.totalRides",
+        "as": "totalRides"
+      },
+      {
+        "column": "d.totalEarnings",
+        "as": "totalEarnings"
+      },
+      {
+        "column": "d.bio",
+        "as": "bio"
+      },
+      {
+        "column": "d.licenseExpiryDate",
+        "as": "licenseExpiryDate"
+      },
+      {
+        "column": "d.cityId",
+        "as": "cityId"
+      },
+      {
+        "column": "d.vehicleTypeId",
+        "as": "vehicleTypeId"
+      },
+      {
+        "column": "c.name",
+        "as": "cityName"
+      },
+      {
+        "column": "c.region",
+        "as": "regionName"
+      },
+      {
+        "column": "v.name",
+        "as": "vehicleTypeName"
+      },
+      {
+        "column": "v.localName",
+        "as": "vehicleLocalName"
+      },
+      {
+        "column": "v.modelKey",
+        "as": "vehicleModelKey"
+      },
+      {
+        "column": "v.seats",
+        "as": "vehicleSeats"
+      },
+      {
+        "column": "v.hasAirConditioning",
+        "as": "vehicleHasAirConditioning"
+      }
+    ],
+    "orderBy": [
+      {
+        "column": "d.rating",
+        "direction": "desc"
+      }
+    ],
+    "limit": 1000
+  },
+  "calculatedColumns": [
+    {
+      "name": "isAvailable",
+      "type": "boolean",
+      "expression": "item.isOnline === true && item.verificationStatus === 'Vérifié'",
+      "description": "Le chauffeur est en ligne et ses pièces sont validées : il peut recevoir une course"
+    },
+    {
+      "name": "vehicleSummary",
+      "type": "string",
+      "expression": "[item.vehicleTypeName, item.vehicleColor, item.plateNumber].filter(Boolean).join(' · ')",
+      "description": "Véhicule résumé pour l'affichage : type, couleur et immatriculation"
+    }
+  ]
+}

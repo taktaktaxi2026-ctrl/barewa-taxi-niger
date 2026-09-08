@@ -1,0 +1,99 @@
+{
+  "name": "CityRideStats",
+  "query": {
+    "from": {
+      "table": "Rides",
+      "as": "r"
+    },
+    "join": [
+      {
+        "table": "Cities",
+        "as": "c",
+        "type": "inner",
+        "on": [
+          {
+            "left": "r.cityId",
+            "right": "c.id"
+          }
+        ]
+      }
+    ],
+    "select": [
+      {
+        "column": "c.id",
+        "as": "cityId"
+      },
+      {
+        "column": "c.name",
+        "as": "cityName"
+      },
+      {
+        "column": "c.region",
+        "as": "regionName"
+      },
+      {
+        "column": "c.latitude",
+        "as": "latitude"
+      },
+      {
+        "column": "c.longitude",
+        "as": "longitude"
+      },
+      {
+        "column": "r.id",
+        "function": "count",
+        "as": "completedRides"
+      },
+      {
+        "column": "r.finalFare",
+        "function": "sum",
+        "as": "revenue"
+      },
+      {
+        "column": "r.platformCommission",
+        "function": "sum",
+        "as": "platformCommission"
+      },
+      {
+        "column": "r.distanceKm",
+        "function": "avg",
+        "as": "averageDistanceKm"
+      },
+      {
+        "column": "r.durationMin",
+        "function": "avg",
+        "as": "averageDurationMin"
+      },
+      {
+        "column": "r.finalFare",
+        "function": "avg",
+        "as": "averageFare"
+      },
+      {
+        "column": "r.ratingByPassenger",
+        "function": "avg",
+        "as": "averageRating"
+      }
+    ],
+    "where": {
+      "column": "r.status",
+      "operator": "=",
+      "value": "Terminée"
+    },
+    "groupBy": [
+      "c.id",
+      "c.name",
+      "c.region",
+      "c.latitude",
+      "c.longitude"
+    ],
+    "orderBy": [
+      {
+        "column": "revenue",
+        "direction": "desc"
+      }
+    ],
+    "limit": 100
+  },
+  "calculatedColumns": []
+}

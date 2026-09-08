@@ -1,0 +1,95 @@
+{
+  "name": "LandmarksByCity",
+  "query": {
+    "from": {
+      "table": "Landmarks",
+      "as": "l"
+    },
+    "join": [
+      {
+        "table": "Cities",
+        "as": "c",
+        "type": "left",
+        "on": [
+          {
+            "left": "l.cityId",
+            "right": "c.id"
+          }
+        ]
+      }
+    ],
+    "select": [
+      {
+        "column": "l.id",
+        "as": "landmarkId"
+      },
+      {
+        "column": "l.name",
+        "as": "name"
+      },
+      {
+        "column": "l.localName",
+        "as": "localName"
+      },
+      {
+        "column": "l.category",
+        "as": "category"
+      },
+      {
+        "column": "l.district",
+        "as": "district"
+      },
+      {
+        "column": "l.latitude",
+        "as": "latitude"
+      },
+      {
+        "column": "l.longitude",
+        "as": "longitude"
+      },
+      {
+        "column": "l.description",
+        "as": "description"
+      },
+      {
+        "column": "l.isPopular",
+        "as": "isPopular"
+      },
+      {
+        "column": "l.cityId",
+        "as": "cityId"
+      },
+      {
+        "column": "c.name",
+        "as": "cityName"
+      },
+      {
+        "column": "c.region",
+        "as": "regionName"
+      },
+      {
+        "column": "c.isActive",
+        "as": "cityIsActive"
+      }
+    ],
+    "orderBy": [
+      {
+        "column": "c.name",
+        "direction": "asc"
+      },
+      {
+        "column": "l.name",
+        "direction": "asc"
+      }
+    ],
+    "limit": 1000
+  },
+  "calculatedColumns": [
+    {
+      "name": "searchLabel",
+      "type": "string",
+      "expression": "[item.name, item.localName, item.district, item.cityName].filter(Boolean).join(' · ')",
+      "description": "Libellé de recherche cumulant le nom officiel, le nom local et le quartier"
+    }
+  ]
+}

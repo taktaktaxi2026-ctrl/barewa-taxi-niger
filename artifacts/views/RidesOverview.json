@@ -1,0 +1,221 @@
+{
+  "name": "RidesOverview",
+  "query": {
+    "from": {
+      "table": "Rides",
+      "as": "r"
+    },
+    "join": [
+      {
+        "table": "PassengerProfile",
+        "as": "p",
+        "type": "left",
+        "on": [
+          {
+            "left": "r.passengerId",
+            "right": "p.id"
+          }
+        ]
+      },
+      {
+        "table": "DriverProfile",
+        "as": "d",
+        "type": "left",
+        "on": [
+          {
+            "left": "r.driverId",
+            "right": "d.id"
+          }
+        ]
+      },
+      {
+        "table": "Cities",
+        "as": "c",
+        "type": "left",
+        "on": [
+          {
+            "left": "r.cityId",
+            "right": "c.id"
+          }
+        ]
+      },
+      {
+        "table": "VehicleTypes",
+        "as": "v",
+        "type": "left",
+        "on": [
+          {
+            "left": "r.vehicleTypeId",
+            "right": "v.id"
+          }
+        ]
+      },
+      {
+        "table": "PaymentProviders",
+        "as": "pp",
+        "type": "left",
+        "on": [
+          {
+            "left": "r.paymentProviderId",
+            "right": "pp.id"
+          }
+        ]
+      }
+    ],
+    "select": [
+      {
+        "column": "r.id",
+        "as": "rideId"
+      },
+      {
+        "column": "r.reference",
+        "as": "reference"
+      },
+      {
+        "column": "r.status",
+        "as": "status"
+      },
+      {
+        "column": "r.pickupLabel",
+        "as": "pickupLabel"
+      },
+      {
+        "column": "r.dropoffLabel",
+        "as": "dropoffLabel"
+      },
+      {
+        "column": "r.pickupLatitude",
+        "as": "pickupLatitude"
+      },
+      {
+        "column": "r.pickupLongitude",
+        "as": "pickupLongitude"
+      },
+      {
+        "column": "r.dropoffLatitude",
+        "as": "dropoffLatitude"
+      },
+      {
+        "column": "r.dropoffLongitude",
+        "as": "dropoffLongitude"
+      },
+      {
+        "column": "r.distanceKm",
+        "as": "distanceKm"
+      },
+      {
+        "column": "r.durationMin",
+        "as": "durationMin"
+      },
+      {
+        "column": "r.estimatedFare",
+        "as": "estimatedFare"
+      },
+      {
+        "column": "r.finalFare",
+        "as": "finalFare"
+      },
+      {
+        "column": "r.discountAmount",
+        "as": "discountAmount"
+      },
+      {
+        "column": "r.platformCommission",
+        "as": "platformCommission"
+      },
+      {
+        "column": "r.driverPayout",
+        "as": "driverPayout"
+      },
+      {
+        "column": "r.paymentStatus",
+        "as": "paymentStatus"
+      },
+      {
+        "column": "r.requestedAt",
+        "as": "requestedAt"
+      },
+      {
+        "column": "r.completedAt",
+        "as": "completedAt"
+      },
+      {
+        "column": "r.ratingByPassenger",
+        "as": "ratingByPassenger"
+      },
+      {
+        "column": "r.passengerId",
+        "as": "passengerId"
+      },
+      {
+        "column": "r.driverId",
+        "as": "driverId"
+      },
+      {
+        "column": "p.fullName",
+        "as": "passengerName"
+      },
+      {
+        "column": "p.phoneNumber",
+        "as": "passengerPhone"
+      },
+      {
+        "column": "d.fullName",
+        "as": "driverName"
+      },
+      {
+        "column": "d.phoneNumber",
+        "as": "driverPhone"
+      },
+      {
+        "column": "d.plateNumber",
+        "as": "driverPlate"
+      },
+      {
+        "column": "d.rating",
+        "as": "driverRating"
+      },
+      {
+        "column": "c.name",
+        "as": "cityName"
+      },
+      {
+        "column": "c.region",
+        "as": "regionName"
+      },
+      {
+        "column": "v.name",
+        "as": "vehicleTypeName"
+      },
+      {
+        "column": "v.modelKey",
+        "as": "vehicleModelKey"
+      },
+      {
+        "column": "pp.name",
+        "as": "paymentProviderName"
+      }
+    ],
+    "orderBy": [
+      {
+        "column": "r.requestedAt",
+        "direction": "desc"
+      }
+    ],
+    "limit": 500
+  },
+  "calculatedColumns": [
+    {
+      "name": "routeLabel",
+      "type": "string",
+      "expression": "(item.pickupLabel || '?') + ' → ' + (item.dropoffLabel || '?')",
+      "description": "Trajet résumé sous la forme « départ → arrivée »"
+    },
+    {
+      "name": "billedFare",
+      "type": "number",
+      "expression": "item.finalFare || item.estimatedFare || 0",
+      "description": "Montant facturé : le prix final s'il existe, sinon l'estimation verrouillée"
+    }
+  ]
+}

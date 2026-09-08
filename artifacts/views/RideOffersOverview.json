@@ -1,0 +1,53 @@
+{
+  "name": "RideOffersOverview",
+  "description": "L'historique de négociation des prix, avec la course et le chauffeur concernés",
+  "technicalDescription": "Vue de lecture du marchandage : chaque offre est présentée avec la référence de course, le trajet, le prix calculé par la grille et le nom du chauffeur. Sert au fil de négociation côté passager et chauffeur, et à l'analyse des écarts entre tarif calculé et prix pratiqué côté superviseur. Les offres se créent et se répondent par les actions SubmitRideOffer et AcceptRideOffer sur la table RideOffers.",
+  "query": {
+    "from": { "table": "RideOffers", "as": "o" },
+    "join": [
+      {
+        "table": "Rides",
+        "as": "r",
+        "type": "left",
+        "on": [{ "left": "o.rideId", "right": "r.id" }]
+      },
+      {
+        "table": "DriverProfile",
+        "as": "d",
+        "type": "left",
+        "on": [{ "left": "o.driverId", "right": "d.id" }]
+      }
+    ],
+    "select": [
+      { "column": "o.id", "as": "offerId" },
+      { "column": "o.side", "as": "side" },
+      { "column": "o.amount", "as": "amount" },
+      { "column": "o.previousAmount", "as": "previousAmount" },
+      { "column": "o.status", "as": "status" },
+      { "column": "o.reason", "as": "reason" },
+      { "column": "o.respondedAt", "as": "respondedAt" },
+      { "column": "o.rideId", "as": "rideId" },
+      { "column": "o.driverId", "as": "driverId" },
+      { "column": "r.reference", "as": "rideReference" },
+      { "column": "r.status", "as": "rideStatus" },
+      { "column": "r.pickupLabel", "as": "pickupLabel" },
+      { "column": "r.dropoffLabel", "as": "dropoffLabel" },
+      { "column": "r.estimatedFare", "as": "currentFare" },
+      { "column": "r.distanceKm", "as": "distanceKm" },
+      { "column": "d.fullName", "as": "driverName" },
+      { "column": "d.phoneNumber", "as": "driverPhone" },
+      { "column": "d.rating", "as": "driverRating" },
+      { "column": "d.plateNumber", "as": "driverPlate" }
+    ],
+    "orderBy": [{ "column": "o.id", "direction": "desc" }],
+    "limit": 500
+  },
+  "calculatedColumns": [
+    {
+      "name": "deltaAmount",
+      "type": "number",
+      "description": "Écart en FCFA entre cette offre et la précédente",
+      "expression": "(item.amount || 0) - (item.previousAmount || 0)"
+    }
+  ]
+}

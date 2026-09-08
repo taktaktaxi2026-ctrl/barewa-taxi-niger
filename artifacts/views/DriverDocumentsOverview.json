@@ -1,0 +1,130 @@
+{
+  "name": "DriverDocumentsOverview",
+  "query": {
+    "from": {
+      "table": "DriverDocuments",
+      "as": "doc"
+    },
+    "join": [
+      {
+        "table": "DriverProfile",
+        "as": "d",
+        "type": "left",
+        "on": [
+          {
+            "left": "doc.driverId",
+            "right": "d.id"
+          }
+        ]
+      },
+      {
+        "table": "Cities",
+        "as": "c",
+        "type": "left",
+        "on": [
+          {
+            "left": "d.cityId",
+            "right": "c.id"
+          }
+        ]
+      }
+    ],
+    "select": [
+      {
+        "column": "doc.id",
+        "as": "documentId"
+      },
+      {
+        "column": "doc.documentType",
+        "as": "documentType"
+      },
+      {
+        "column": "doc.fileUrl",
+        "as": "fileUrl"
+      },
+      {
+        "column": "doc.documentNumber",
+        "as": "documentNumber"
+      },
+      {
+        "column": "doc.holderName",
+        "as": "holderName"
+      },
+      {
+        "column": "doc.issuedOn",
+        "as": "issuedOn"
+      },
+      {
+        "column": "doc.expiryDate",
+        "as": "expiryDate"
+      },
+      {
+        "column": "doc.checkStatus",
+        "as": "checkStatus"
+      },
+      {
+        "column": "doc.checkConfidence",
+        "as": "checkConfidence"
+      },
+      {
+        "column": "doc.checkNotes",
+        "as": "checkNotes"
+      },
+      {
+        "column": "doc.extractedData",
+        "as": "extractedData"
+      },
+      {
+        "column": "doc.reviewedBy",
+        "as": "reviewedBy"
+      },
+      {
+        "column": "doc.reviewedAt",
+        "as": "reviewedAt"
+      },
+      {
+        "column": "doc.driverId",
+        "as": "driverId"
+      },
+      {
+        "column": "d.fullName",
+        "as": "driverName"
+      },
+      {
+        "column": "d.email",
+        "as": "driverEmail"
+      },
+      {
+        "column": "d.phoneNumber",
+        "as": "driverPhone"
+      },
+      {
+        "column": "d.plateNumber",
+        "as": "plateNumber"
+      },
+      {
+        "column": "d.verificationStatus",
+        "as": "driverVerificationStatus"
+      },
+      {
+        "column": "c.name",
+        "as": "cityName"
+      }
+    ],
+    "orderBy": [
+      {
+        "column": "doc.id",
+        "direction": "desc"
+      }
+    ],
+    "limit": 500
+  },
+  "calculatedColumns": [
+    {
+      "name": "needsAttention",
+      "type": "boolean",
+      "expression": "['À analyser', 'Illisible', 'Expirée', 'Incohérente'].indexOf(item.checkStatus) !== -1",
+      "description": "La pièce demande une action : illisible, expirée, incohérente ou pas encore analysée"
+    }
+  ]
+}

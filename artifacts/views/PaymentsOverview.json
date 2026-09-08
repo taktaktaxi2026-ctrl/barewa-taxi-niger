@@ -1,0 +1,150 @@
+{
+  "name": "PaymentsOverview",
+  "query": {
+    "from": {
+      "table": "Payments",
+      "as": "pay"
+    },
+    "join": [
+      {
+        "table": "Rides",
+        "as": "r",
+        "type": "left",
+        "on": [
+          {
+            "left": "pay.rideId",
+            "right": "r.id"
+          }
+        ]
+      },
+      {
+        "table": "PaymentProviders",
+        "as": "pp",
+        "type": "left",
+        "on": [
+          {
+            "left": "pay.paymentProviderId",
+            "right": "pp.id"
+          }
+        ]
+      },
+      {
+        "table": "DriverProfile",
+        "as": "d",
+        "type": "left",
+        "on": [
+          {
+            "left": "r.driverId",
+            "right": "d.id"
+          }
+        ]
+      }
+    ],
+    "select": [
+      {
+        "column": "pay.id",
+        "as": "paymentId"
+      },
+      {
+        "column": "pay.reference",
+        "as": "reference"
+      },
+      {
+        "column": "pay.amount",
+        "as": "amount"
+      },
+      {
+        "column": "pay.platformCommission",
+        "as": "platformCommission"
+      },
+      {
+        "column": "pay.driverPayout",
+        "as": "driverPayout"
+      },
+      {
+        "column": "pay.status",
+        "as": "status"
+      },
+      {
+        "column": "pay.payerPhoneNumber",
+        "as": "payerPhoneNumber"
+      },
+      {
+        "column": "pay.ussdString",
+        "as": "ussdString"
+      },
+      {
+        "column": "pay.transactionReference",
+        "as": "transactionReference"
+      },
+      {
+        "column": "pay.initiatedAt",
+        "as": "initiatedAt"
+      },
+      {
+        "column": "pay.confirmedAt",
+        "as": "confirmedAt"
+      },
+      {
+        "column": "pay.payoutStatus",
+        "as": "payoutStatus"
+      },
+      {
+        "column": "pay.failureReason",
+        "as": "failureReason"
+      },
+      {
+        "column": "pay.rideId",
+        "as": "rideId"
+      },
+      {
+        "column": "r.reference",
+        "as": "rideReference"
+      },
+      {
+        "column": "r.pickupLabel",
+        "as": "pickupLabel"
+      },
+      {
+        "column": "r.dropoffLabel",
+        "as": "dropoffLabel"
+      },
+      {
+        "column": "r.status",
+        "as": "rideStatus"
+      },
+      {
+        "column": "pp.name",
+        "as": "providerName"
+      },
+      {
+        "column": "pp.kind",
+        "as": "providerKind"
+      },
+      {
+        "column": "pp.brandColor",
+        "as": "providerBrandColor"
+      },
+      {
+        "column": "d.id",
+        "as": "driverId"
+      },
+      {
+        "column": "d.fullName",
+        "as": "driverName"
+      },
+      {
+        "column": "d.mobileMoneyNumber",
+        "as": "driverMobileMoneyNumber"
+      }
+    ],
+    "orderBy": [
+      {
+        "column": "pay.initiatedAt",
+        "direction": "desc"
+      }
+    ],
+    "limit": 500
+  },
+  "calculatedColumns": []
+}

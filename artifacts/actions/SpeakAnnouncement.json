@@ -1,0 +1,51 @@
+{
+  "name": "SpeakAnnouncement",
+  "type": "dag",
+  "description": "Transforme un texte en annonce vocale et renvoie le fichier audio à lire dans l'application. Sert au message de bienvenue parlé de l'accueil passager et aux annonces de statut de course, pour les utilisateurs qui lisent mal le français écrit.",
+  "iconName": "volume-2",
+  "exposedToUI": true,
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "text"
+    ],
+    "properties": {
+      "text": {
+        "type": "string",
+        "description": "Texte à prononcer, déjà rédigé dans la langue choisie par l'utilisateur"
+      },
+      "voice": {
+        "type": "string",
+        "description": "Voix de synthèse à utiliser",
+        "enum": [
+          "alloy",
+          "ash",
+          "ballad",
+          "coral",
+          "echo",
+          "fable",
+          "onyx",
+          "nova",
+          "sage",
+          "shimmer",
+          "verse"
+        ],
+        "default": "nova"
+      }
+    }
+  },
+  "output": "SynthesizeAnnouncement",
+  "actionNodes": [
+    {
+      "name": "SynthesizeAnnouncement",
+      "actionTypeId": "684a87f57ff83907a4e90155",
+      "input": {
+        "text": "",
+        "voice": "",
+        "modelName": "gpt-4o-mini-tts"
+      }
+    }
+  ],
+  "edges": [],
+  "usageDescription": "This action is triggered by:\n\n- **A passenger listening to the welcome message**: the loudspeaker button in the welcome panel of the passenger Home tab\n- **Anyone using the assistant by voice**: the \"Écouter\" button in the BAREWA assistant window, opened from the sparkle button in the top bar or the floating button at the bottom right\n  It reads the message aloud for people who do not read written French easily."
+}
