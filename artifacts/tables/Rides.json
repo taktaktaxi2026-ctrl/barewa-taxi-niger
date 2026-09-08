@@ -1,0 +1,292 @@
+{
+  "name": "Rides",
+  "description": "Table centrale du cycle de vie d'une course. Le statut avance : Recherche → Acceptée → Chauffeur en route → Chauffeur arrivé → En course → Terminée (ou Annulée). Les libellés et coordonnées de départ et d'arrivée sont figés sur la course elle-même, indépendamment du référentiel Landmarks, pour que l'historique reste exact si un repère est renommé ; ces coordonnées alimentent aussi l'ouverture de Google Street View sur le point de départ et le point d'arrivée. estimatedFare est le prix verrouillé au moment de la commande, finalFare le montant réellement facturé après la course.",
+  "columns": [
+    {
+      "name": "vehicleTypeId",
+      "type": "number",
+      "description": "Type de véhicule demandé par le passager",
+      "reference": {
+        "table": "VehicleTypes",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "description": "Étape actuelle de la course",
+      "enum": [
+        "Recherche",
+        "Acceptée",
+        "Chauffeur en route",
+        "Chauffeur arrivé",
+        "En course",
+        "Terminée",
+        "Annulée",
+        "Simulation terminée"
+      ]
+    },
+    {
+      "name": "pickupLabel",
+      "type": "string",
+      "description": "Libellé du point de départ tel que vu par le chauffeur"
+    },
+    {
+      "name": "pickupLatitude",
+      "type": "number",
+      "description": "Latitude du point de départ"
+    },
+    {
+      "name": "pickupLongitude",
+      "type": "number",
+      "description": "Longitude du point de départ"
+    },
+    {
+      "name": "pickupLandmarkId",
+      "type": "number",
+      "description": "Repère de départ choisi dans le référentiel, s'il y en a un",
+      "reference": {
+        "table": "Landmarks",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "dropoffLabel",
+      "type": "string",
+      "description": "Libellé du point d'arrivée tel que vu par le chauffeur"
+    },
+    {
+      "name": "dropoffLatitude",
+      "type": "number",
+      "description": "Latitude du point d'arrivée"
+    },
+    {
+      "name": "promoCode",
+      "type": "string",
+      "description": "Code promotionnel utilisé sur cette course"
+    },
+    {
+      "name": "discountAmount",
+      "type": "number",
+      "description": "Remise accordée en FCFA"
+    },
+    {
+      "name": "platformCommission",
+      "type": "number",
+      "description": "Commission prélevée par la plateforme en FCFA"
+    },
+    {
+      "name": "driverPayout",
+      "type": "number",
+      "description": "Montant net revenant au chauffeur en FCFA"
+    },
+    {
+      "name": "paymentProviderId",
+      "type": "number",
+      "description": "Moyen de paiement choisi par le passager",
+      "reference": {
+        "table": "PaymentProviders",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "paymentStatus",
+      "type": "string",
+      "description": "État du règlement de la course",
+      "enum": [
+        "En attente",
+        "En cours",
+        "Payé",
+        "Échoué",
+        "Remboursé"
+      ]
+    },
+    {
+      "name": "requestedAt",
+      "type": "datetime",
+      "description": "Horodatage de la commande de la course. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30"
+    },
+    {
+      "name": "acceptedAt",
+      "type": "datetime",
+      "description": "Horodatage de l'acceptation par le chauffeur. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30"
+    },
+    {
+      "name": "passengerId",
+      "type": "number",
+      "description": "Passager qui a commandé la course",
+      "reference": {
+        "table": "PassengerProfile",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "driverId",
+      "type": "number",
+      "description": "Chauffeur affecté à la course, vide tant qu'aucun chauffeur n'a accepté",
+      "reference": {
+        "table": "DriverProfile",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "cityId",
+      "type": "number",
+      "description": "Ville dans laquelle se déroule la course",
+      "reference": {
+        "table": "Cities",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "reference",
+      "type": "string",
+      "description": "Référence courte de la course communiquée au passager et au chauffeur (ex. BRW-4F92K)"
+    },
+    {
+      "name": "dropoffLongitude",
+      "type": "number",
+      "description": "Longitude du point d'arrivée"
+    },
+    {
+      "name": "dropoffLandmarkId",
+      "type": "number",
+      "description": "Repère d'arrivée choisi dans le référentiel, s'il y en a un",
+      "reference": {
+        "table": "Landmarks",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "distanceKm",
+      "type": "number",
+      "description": "Distance du trajet en kilomètres"
+    },
+    {
+      "name": "durationMin",
+      "type": "number",
+      "description": "Durée estimée ou réelle du trajet en minutes"
+    },
+    {
+      "name": "estimatedFare",
+      "type": "number",
+      "description": "Prix verrouillé à la commande, en FCFA"
+    },
+    {
+      "name": "finalFare",
+      "type": "number",
+      "description": "Montant réellement facturé après la course, en FCFA"
+    },
+    {
+      "name": "surgeApplied",
+      "type": "number",
+      "description": "Majoration totale appliquée (nuit et forte demande cumulées), en pourcentage"
+    },
+    {
+      "name": "arrivedAt",
+      "type": "datetime",
+      "description": "Horodatage de l'arrivée du chauffeur au point de départ. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30"
+    },
+    {
+      "name": "startedAt",
+      "type": "datetime",
+      "description": "Horodatage du début effectif du trajet. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30"
+    },
+    {
+      "name": "completedAt",
+      "type": "datetime",
+      "description": "Horodatage de la fin de la course. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30"
+    },
+    {
+      "name": "cancelledAt",
+      "type": "datetime",
+      "description": "Horodatage de l'annulation. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30"
+    },
+    {
+      "name": "cancelledBy",
+      "type": "string",
+      "description": "Qui a annulé la course",
+      "enum": [
+        "Passager",
+        "Chauffeur",
+        "Plateforme"
+      ]
+    },
+    {
+      "name": "cancellationReason",
+      "type": "string",
+      "description": "Motif de l'annulation"
+    },
+    {
+      "name": "passengerNote",
+      "type": "string",
+      "description": "Consigne laissée par le passager au chauffeur (précision sur le point de rendez-vous)"
+    },
+    {
+      "name": "passengerCount",
+      "type": "number",
+      "description": "Nombre de passagers pour la course"
+    },
+    {
+      "name": "ratingByPassenger",
+      "type": "number",
+      "description": "Note de 1 à 5 attribuée au chauffeur par le passager"
+    },
+    {
+      "name": "reviewByPassenger",
+      "type": "string",
+      "description": "Commentaire laissé par le passager"
+    },
+    {
+      "name": "ratingByDriver",
+      "type": "number",
+      "description": "Note de 1 à 5 attribuée au passager par le chauffeur"
+    },
+    {
+      "name": "isScheduled",
+      "type": "boolean",
+      "description": "La course est-elle réservée pour plus tard plutôt qu'immédiate"
+    },
+    {
+      "name": "scheduledFor",
+      "type": "datetime",
+      "description": "Date et heure de prise en charge souhaitée pour une course réservée. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30"
+    },
+    {
+      "name": "isSimulation",
+      "type": "boolean",
+      "description": "Course créée depuis le simulateur de test : elle est exclue des statistiques, des revenus chauffeur et de la comptabilité"
+    },
+    {
+      "name": "receiptNumber",
+      "type": "string",
+      "description": "Numéro du reçu officiel émis pour cette course"
+    },
+    {
+      "name": "receiptUrl",
+      "type": "string",
+      "description": "Reçu officiel en PDF, généré une seule fois et réutilisé pour l'aperçu et le téléchargement"
+    },
+    {
+      "name": "negotiationStatus",
+      "type": "string",
+      "description": "État du marchandage du prix entre passager et chauffeur",
+      "enum": [
+        "Prix calculé",
+        "Négociation en cours",
+        "Prix accepté",
+        "Négociation abandonnée"
+      ]
+    }
+  ],
+  "permission": {
+    "type": "public"
+  }
+}

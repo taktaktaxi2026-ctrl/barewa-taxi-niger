@@ -1,0 +1,74 @@
+{
+  "name": "Landmarks",
+  "description": "Au Niger l'adressage par rue est peu utilisé : passagers et chauffeurs se repèrent aux ronds-points, marchés, mosquées et quartiers. Cette table est le référentiel de ces repères, avec leurs coordonnées exactes pour l'estimation tarifaire, le placement sur la carte et l'ouverture de Google Street View. Le nom local (haoussa ou zarma) est stocké pour que le chauffeur reconnaisse le lieu tel qu'il le nomme au quotidien.",
+  "columns": [
+    {
+      "name": "district",
+      "type": "string",
+      "description": "Quartier ou arrondissement (ex. Plateau, Yantala, Wadata, Harobanda)"
+    },
+    {
+      "name": "latitude",
+      "type": "number",
+      "description": "Latitude exacte du repère"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Nom officiel du repère (ex. Rond-point Maourey, Grande Mosquée de Niamey)"
+    },
+    {
+      "name": "localName",
+      "type": "string",
+      "description": "Nom courant en haoussa ou zarma tel qu'utilisé par les chauffeurs"
+    },
+    {
+      "name": "cityId",
+      "type": "number",
+      "description": "Ville dans laquelle se trouve le repère",
+      "reference": {
+        "table": "Cities",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "category",
+      "type": "string",
+      "description": "Type de repère, utilisé pour l'icône et le filtrage dans la recherche de lieu",
+      "enum": [
+        "Carrefour",
+        "Monument",
+        "Marché",
+        "Mosquée",
+        "Hôpital",
+        "Aéroport",
+        "Gare routière",
+        "Université",
+        "Administration",
+        "Hôtel",
+        "Stade",
+        "Quartier",
+        "Débarcadère"
+      ]
+    },
+    {
+      "name": "longitude",
+      "type": "number",
+      "description": "Longitude exacte du repère"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Précision utile au chauffeur pour trouver le point de rendez-vous"
+    },
+    {
+      "name": "isPopular",
+      "type": "boolean",
+      "description": "Repère mis en avant dans les suggestions rapides de l'écran de commande"
+    }
+  ],
+  "permission": {
+    "type": "public"
+  }
+}

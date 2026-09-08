@@ -1,0 +1,97 @@
+{
+  "name": "DriverDocuments",
+  "description": "Chaque pièce déposée par un chauffeur (permis, carte d'identité, carte grise, assurance, visite technique) est stockée ici avec son fichier. L'action VerifyDriverDocument lit le fichier, en extrait les champs par reconnaissance de texte et écrit le résultat dans extractedData ainsi que le verdict dans checkStatus, checkConfidence et checkNotes. expiryDate permet de relancer le chauffeur avant péremption ; c'est la date qui conditionne le maintien du statut Vérifié sur DriverProfile.",
+  "columns": [
+    {
+      "name": "holderName",
+      "type": "string",
+      "description": "Nom du titulaire lu sur la pièce"
+    },
+    {
+      "name": "issuedOn",
+      "type": "date",
+      "description": "Date de délivrance lue sur la pièce. ISO 8601 date string, format: YYYY-MM-DD, e.g. 2025-09-30"
+    },
+    {
+      "name": "documentNumber",
+      "type": "string",
+      "description": "Numéro de la pièce, extrait automatiquement puis corrigeable"
+    },
+    {
+      "name": "expiryDate",
+      "type": "date",
+      "description": "Date d'expiration de la pièce. ISO 8601 date string, format: YYYY-MM-DD, e.g. 2025-09-30"
+    },
+    {
+      "name": "checkStatus",
+      "type": "string",
+      "description": "Verdict du contrôle de la pièce",
+      "enum": [
+        "À analyser",
+        "Analyse en cours",
+        "Lisible et conforme",
+        "Illisible",
+        "Expirée",
+        "Incohérente",
+        "Validée manuellement",
+        "Rejetée"
+      ]
+    },
+    {
+      "name": "checkConfidence",
+      "type": "number",
+      "description": "Indice de confiance de la lecture automatique, de 0 à 100"
+    },
+    {
+      "name": "checkNotes",
+      "type": "string",
+      "description": "Observations du contrôle : anomalies détectées ou champs manquants"
+    },
+    {
+      "name": "driverId",
+      "type": "number",
+      "description": "Chauffeur auquel appartient la pièce",
+      "reference": {
+        "table": "DriverProfile",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "documentType",
+      "type": "string",
+      "description": "Nature de la pièce déposée",
+      "enum": [
+        "Permis de conduire",
+        "Carte nationale d'identité",
+        "Carte grise",
+        "Attestation d'assurance",
+        "Visite technique",
+        "Photo du véhicule"
+      ]
+    },
+    {
+      "name": "fileUrl",
+      "type": "string",
+      "description": "Fichier ou photo de la pièce, déposé par le chauffeur"
+    },
+    {
+      "name": "extractedData",
+      "type": "object",
+      "description": "Champs bruts extraits de la pièce par reconnaissance de texte"
+    },
+    {
+      "name": "reviewedBy",
+      "type": "string",
+      "description": "Email de l'administrateur ayant tranché manuellement, le cas échéant"
+    },
+    {
+      "name": "reviewedAt",
+      "type": "datetime",
+      "description": "Horodatage de la décision manuelle. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30"
+    }
+  ],
+  "permission": {
+    "type": "public"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "name": "PromoCodes",
+  "description": "Réductions saisies par le passager à la commande et appliquées par EstimateRideFare : le code doit être actif, dans sa fenêtre de validité, sous son plafond d'utilisations et, si cityId est renseigné, limité à cette ville. Le type de remise est soit un pourcentage du prix, soit un montant fixe en FCFA, plafonné par maxDiscountAmount.",
+  "columns": [
+    {
+      "name": "code",
+      "type": "string",
+      "description": "Code à saisir par le passager, en majuscules (ex. BAREWA1000)"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Explication de l'offre affichée au passager"
+    },
+    {
+      "name": "discountType",
+      "type": "string",
+      "description": "Nature de la remise",
+      "enum": [
+        "Pourcentage",
+        "Montant fixe"
+      ]
+    },
+    {
+      "name": "discountValue",
+      "type": "number",
+      "description": "Valeur de la remise : pourcentage du prix, ou montant en FCFA"
+    },
+    {
+      "name": "maxDiscountAmount",
+      "type": "number",
+      "description": "Plafond de la remise en FCFA, pour les remises en pourcentage"
+    },
+    {
+      "name": "minimumFare",
+      "type": "number",
+      "description": "Prix minimum de la course pour que le code soit utilisable, en FCFA"
+    },
+    {
+      "name": "cityId",
+      "type": "number",
+      "description": "Ville dans laquelle le code est valable ; vide signifie tout le pays",
+      "reference": {
+        "table": "Cities",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "maxUses",
+      "type": "number",
+      "description": "Nombre total d'utilisations autorisées, toutes personnes confondues"
+    },
+    {
+      "name": "maxUsesPerPassenger",
+      "type": "number",
+      "description": "Nombre d'utilisations autorisées par passager"
+    },
+    {
+      "name": "validUntil",
+      "type": "date",
+      "description": "Dernier jour de validité du code. ISO 8601 date string, format: YYYY-MM-DD, e.g. 2025-09-30. ISO 8601 date string, format: YYYY-MM-DD, e.g. 2025-09-30"
+    },
+    {
+      "name": "usedCount",
+      "type": "number",
+      "description": "Nombre d'utilisations déjà consommées"
+    },
+    {
+      "name": "isActive",
+      "type": "boolean",
+      "description": "Le code est-il activé"
+    },
+    {
+      "name": "validFrom",
+      "type": "date",
+      "description": "Premier jour de validité du code. ISO 8601 date string, format: YYYY-MM-DD, e.g. 2025-09-30. ISO 8601 date string, format: YYYY-MM-DD, e.g. 2025-09-30"
+    }
+  ],
+  "permission": {
+    "type": "public"
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "name": "Payments",
+  "description": "Registre comptable des encaissements. Une ligne est créée par InitiateMobileMoneyPayment au moment où le passager déclenche le paiement (statut Initié, avec la chaîne USSD à composer), puis passée à Confirmé par ConfirmMobileMoneyPayment après saisie de la référence de transaction reçue par SMS. Les règlements en espèces sont enregistrés directement en Confirmé par le chauffeur. La ventilation commission plateforme / net chauffeur est figée ici pour l'historique des versements.",
+  "columns": [
+    {
+      "name": "reference",
+      "type": "string",
+      "description": "Référence interne du règlement (ex. PAY-4F92K-01)"
+    },
+    {
+      "name": "rideId",
+      "type": "number",
+      "description": "Course réglée par ce paiement",
+      "reference": {
+        "table": "Rides",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "paymentProviderId",
+      "type": "number",
+      "description": "Opérateur ou moyen de paiement utilisé",
+      "reference": {
+        "table": "PaymentProviders",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "amount",
+      "type": "number",
+      "description": "Montant réglé en FCFA"
+    },
+    {
+      "name": "platformCommission",
+      "type": "number",
+      "description": "Part plateforme prélevée sur ce montant, en FCFA"
+    },
+    {
+      "name": "driverPayout",
+      "type": "number",
+      "description": "Net revenant au chauffeur, en FCFA"
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "description": "État du règlement",
+      "enum": [
+        "Initié",
+        "En attente de confirmation",
+        "Confirmé",
+        "Échoué",
+        "Remboursé"
+      ]
+    },
+    {
+      "name": "payerPhoneNumber",
+      "type": "string",
+      "description": "Numéro mobile money débité"
+    },
+    {
+      "name": "ussdString",
+      "type": "string",
+      "description": "Chaîne USSD complète communiquée au passager pour ce paiement"
+    },
+    {
+      "name": "transactionReference",
+      "type": "string",
+      "description": "Référence de transaction de l'opérateur, reçue par SMS et saisie pour confirmation"
+    },
+    {
+      "name": "initiatedAt",
+      "type": "datetime",
+      "description": "Horodatage du déclenchement du paiement. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30"
+    },
+    {
+      "name": "confirmedAt",
+      "type": "datetime",
+      "description": "Horodatage de la confirmation du paiement. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30"
+    },
+    {
+      "name": "failureReason",
+      "type": "string",
+      "description": "Motif d'échec du règlement"
+    },
+    {
+      "name": "payoutStatus",
+      "type": "string",
+      "description": "État du versement de la part chauffeur",
+      "enum": [
+        "À verser",
+        "Versé",
+        "Encaissé en espèces"
+      ]
+    },
+    {
+      "name": "payoutAt",
+      "type": "datetime",
+      "description": "Horodatage du versement au chauffeur. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30"
+    }
+  ],
+  "permission": {
+    "type": "public"
+  }
+}

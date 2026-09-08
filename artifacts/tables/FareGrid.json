@@ -1,0 +1,79 @@
+{
+  "name": "FareGrid",
+  "description": "Source unique de vérité pour le calcul du prix d'une course. L'action EstimateRideFare lit la ligne correspondant à (ville, type de véhicule) et applique : prix = max(minimumFare, baseFare + distanceKm × pricePerKm + durationMin × pricePerMinute), puis la majoration de nuit et le multiplicateur de forte demande. Les administrateurs modifient ces valeurs sans toucher au code.",
+  "columns": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Libellé unique de la ligne tarifaire, au format « Ville — Type de véhicule »"
+    },
+    {
+      "name": "cityId",
+      "type": "number",
+      "description": "Ville à laquelle s'applique ce tarif",
+      "reference": {
+        "table": "Cities",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "driverCommissionPercent",
+      "type": "number",
+      "description": "Part de la course prélevée par la plateforme, en pourcentage"
+    },
+    {
+      "name": "isActive",
+      "type": "boolean",
+      "description": "Cette ligne tarifaire est-elle en vigueur"
+    },
+    {
+      "name": "vehicleTypeId",
+      "type": "number",
+      "description": "Type de véhicule tarifé",
+      "reference": {
+        "table": "VehicleTypes",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "baseFare",
+      "type": "number",
+      "description": "Prise en charge fixe au départ, en FCFA"
+    },
+    {
+      "name": "pricePerKm",
+      "type": "number",
+      "description": "Prix du kilomètre parcouru, en FCFA"
+    },
+    {
+      "name": "pricePerMinute",
+      "type": "number",
+      "description": "Prix de la minute de trajet, en FCFA"
+    },
+    {
+      "name": "minimumFare",
+      "type": "number",
+      "description": "Prix plancher d'une course, en FCFA"
+    },
+    {
+      "name": "cancellationFee",
+      "type": "number",
+      "description": "Frais d'annulation après acceptation du chauffeur, en FCFA"
+    },
+    {
+      "name": "nightSurchargePercent",
+      "type": "number",
+      "description": "Majoration appliquée entre 22h et 5h, en pourcentage"
+    },
+    {
+      "name": "peakSurchargePercent",
+      "type": "number",
+      "description": "Majoration appliquée aux heures de pointe, en pourcentage"
+    }
+  ],
+  "permission": {
+    "type": "public"
+  }
+}

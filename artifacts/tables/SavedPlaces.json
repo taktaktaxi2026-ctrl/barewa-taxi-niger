@@ -1,0 +1,64 @@
+{
+  "name": "SavedPlaces",
+  "description": "Raccourcis de commande propres à chaque passager. Comme l'adressage par rue est peu répandu au Niger, le passager enregistre ses points de rendez-vous habituels avec leurs coordonnées exactes et une consigne libre pour le chauffeur, ce qui évite de redécrire le lieu à chaque course.",
+  "columns": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Nom donné au lieu par le passager (ex. Maison, Bureau, École des enfants)"
+    },
+    {
+      "name": "passengerId",
+      "type": "number",
+      "description": "Passager propriétaire de ce lieu favori",
+      "reference": {
+        "table": "PassengerProfile",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "cityId",
+      "type": "number",
+      "description": "Ville du lieu",
+      "reference": {
+        "table": "Cities",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "iconName",
+      "type": "string",
+      "description": "Nom d'icône Lucide choisi pour ce lieu (house, briefcase, graduation-cap...)"
+    },
+    {
+      "name": "latitude",
+      "type": "number",
+      "description": "Latitude exacte du point de rendez-vous"
+    },
+    {
+      "name": "longitude",
+      "type": "number",
+      "description": "Longitude exacte du point de rendez-vous"
+    },
+    {
+      "name": "nearbyLandmarkId",
+      "type": "number",
+      "description": "Repère connu le plus proche, pour aider le chauffeur à se situer",
+      "reference": {
+        "table": "Landmarks",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "directions",
+      "type": "string",
+      "description": "Consigne libre pour le chauffeur (ex. portail vert après la pharmacie)"
+    }
+  ],
+  "permission": {
+    "type": "public"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "name": "Cities",
+  "description": "Référentiel géographique national. Chaque ville porte son centre géographique (latitude/longitude) utilisé pour centrer la carte, filtrer les chauffeurs en ligne et rattacher la grille tarifaire locale. Le champ isActive permet d'ouvrir ou fermer le service dans une ville sans supprimer ses données.",
+  "columns": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Nom de la ville (ex. Niamey, Maradi, Zinder)"
+    },
+    {
+      "name": "region",
+      "type": "string",
+      "description": "Région administrative du Niger à laquelle la ville appartient",
+      "enum": [
+        "Niamey",
+        "Maradi",
+        "Zinder",
+        "Tahoua",
+        "Agadez",
+        "Dosso",
+        "Diffa",
+        "Tillabéri"
+      ]
+    },
+    {
+      "name": "latitude",
+      "type": "number",
+      "description": "Latitude du centre-ville, utilisée pour centrer la carte et calculer les distances"
+    },
+    {
+      "name": "longitude",
+      "type": "number",
+      "description": "Longitude du centre-ville, utilisée pour centrer la carte et calculer les distances"
+    },
+    {
+      "name": "serviceRadiusKm",
+      "type": "number",
+      "description": "Rayon de couverture du service autour du centre-ville, en kilomètres"
+    },
+    {
+      "name": "isActive",
+      "type": "boolean",
+      "description": "Le service BAREWA est-il ouvert dans cette ville"
+    },
+    {
+      "name": "notes",
+      "type": "string",
+      "description": "Particularités locales de mobilité (types de véhicules dominants, contraintes de circulation)"
+    }
+  ],
+  "permission": {
+    "type": "public"
+  }
+}

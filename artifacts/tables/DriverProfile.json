@@ -1,0 +1,171 @@
+{
+  "name": "DriverProfile",
+  "description": "Entité d'extension du compte utilisateur pour la persona chauffeur : elle référence le compte par email et porte tout ce qui est propre au métier. currentLatitude/currentLongitude et isOnline sont mis à jour par l'application chauffeur et lus par FindNearbyDrivers pour la mise en relation. vehicle3DConfig stocke la personnalisation du Studio 3D (couleur de carrosserie, accent, bâche, panneau de toit) et vehiclePhotoUrl la vraie photo du véhicule projetée en décalcomanie sur le modèle Three.js montré au passager. verificationStatus reflète le contrôle des pièces effectué via VerifyDriverDocument.",
+  "columns": [
+    {
+      "name": "email",
+      "type": "string",
+      "description": "Email du compte utilisateur du chauffeur",
+      "reference": {
+        "table": "Users",
+        "column": "email",
+        "relationshipHint": "oneToOne"
+      }
+    },
+    {
+      "name": "fullName",
+      "type": "string",
+      "description": "Nom et prénom du chauffeur"
+    },
+    {
+      "name": "phoneNumber",
+      "type": "string",
+      "description": "Numéro de téléphone au format international (+227...) pour l'appel GSM direct"
+    },
+    {
+      "name": "whatsappNumber",
+      "type": "string",
+      "description": "Numéro WhatsApp du chauffeur, s'il diffère du numéro d'appel"
+    },
+    {
+      "name": "profilePhotoUrl",
+      "type": "string",
+      "description": "Photo de profil du chauffeur montrée au passager"
+    },
+    {
+      "name": "cityId",
+      "type": "number",
+      "description": "Ville d'exercice du chauffeur",
+      "reference": {
+        "table": "Cities",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "vehicleTypeId",
+      "type": "number",
+      "description": "Type de véhicule conduit",
+      "reference": {
+        "table": "VehicleTypes",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "plateNumber",
+      "type": "string",
+      "description": "Numéro d'immatriculation du véhicule"
+    },
+    {
+      "name": "vehicleColor",
+      "type": "string",
+      "description": "Couleur réelle du véhicule"
+    },
+    {
+      "name": "vehicleYear",
+      "type": "number",
+      "description": "Année de mise en circulation du véhicule"
+    },
+    {
+      "name": "vehiclePhotoUrl",
+      "type": "string",
+      "description": "Vraie photo du véhicule prise ou importée par le chauffeur, projetée sur la carrosserie 3D"
+    },
+    {
+      "name": "vehicle3DConfig",
+      "type": "object",
+      "description": "Personnalisation du véhicule dans le Studio 3D, appliquée au modèle Three.js"
+    },
+    {
+      "name": "licenseNumber",
+      "type": "string",
+      "description": "Numéro du permis de conduire"
+    },
+    {
+      "name": "licenseExpiryDate",
+      "type": "date",
+      "description": "Date d'expiration du permis de conduire. ISO 8601 date string, format: YYYY-MM-DD, e.g. 2025-09-30"
+    },
+    {
+      "name": "nationalIdNumber",
+      "type": "string",
+      "description": "Numéro de la carte nationale d'identité"
+    },
+    {
+      "name": "verificationStatus",
+      "type": "string",
+      "description": "État du contrôle des pièces du chauffeur : seuls les chauffeurs Vérifié reçoivent des courses",
+      "enum": [
+        "En attente",
+        "Documents à fournir",
+        "Vérifié",
+        "Suspendu",
+        "Rejeté"
+      ]
+    },
+    {
+      "name": "spokenLanguages",
+      "type": "string",
+      "description": "Langues parlées par le chauffeur, séparées par des virgules (Français, Haoussa, Zarma, Tamajaq)"
+    },
+    {
+      "name": "acceptedPaymentMethods",
+      "type": "string",
+      "description": "Moyens de paiement acceptés par le chauffeur, séparés par des virgules"
+    },
+    {
+      "name": "mobileMoneyNumber",
+      "type": "string",
+      "description": "Numéro mobile money sur lequel le chauffeur reçoit ses versements"
+    },
+    {
+      "name": "isOnline",
+      "type": "boolean",
+      "description": "Le chauffeur est-il en ligne et disponible pour recevoir des courses"
+    },
+    {
+      "name": "currentLatitude",
+      "type": "number",
+      "description": "Dernière latitude connue du chauffeur, mise à jour par l'application chauffeur"
+    },
+    {
+      "name": "currentLongitude",
+      "type": "number",
+      "description": "Dernière longitude connue du chauffeur, mise à jour par l'application chauffeur"
+    },
+    {
+      "name": "lastSeenAt",
+      "type": "datetime",
+      "description": "Horodatage de la dernière remontée de position. ISO 8601 datetime string, format: YYYY-MM-DDTHH:MM:SS, e.g. 2025-09-30T18:45:00Z, 2025-09-30T18:45:00+05:30"
+    },
+    {
+      "name": "rating",
+      "type": "number",
+      "description": "Note moyenne du chauffeur sur 5"
+    },
+    {
+      "name": "totalRides",
+      "type": "number",
+      "description": "Nombre total de courses terminées"
+    },
+    {
+      "name": "totalEarnings",
+      "type": "number",
+      "description": "Total des gains cumulés en FCFA, net de commission"
+    },
+    {
+      "name": "bio",
+      "type": "string",
+      "description": "Présentation courte du chauffeur affichée au passager"
+    },
+    {
+      "name": "joinedOn",
+      "type": "date",
+      "description": "Date d'inscription du chauffeur sur la plateforme. ISO 8601 date string, format: YYYY-MM-DD, e.g. 2025-09-30"
+    }
+  ],
+  "permission": {
+    "type": "public"
+  }
+}

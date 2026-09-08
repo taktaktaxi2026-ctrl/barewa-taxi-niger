@@ -1,0 +1,33 @@
+{
+  "name": "Users",
+  "columns": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "User name"
+    },
+    {
+      "name": "firstName",
+      "type": "string",
+      "description": "First name"
+    },
+    {
+      "name": "lastName",
+      "type": "string",
+      "description": "Last name"
+    },
+    {
+      "name": "email",
+      "type": "string",
+      "description": "Email address"
+    },
+    {
+      "name": "profileImageUrl",
+      "type": "string",
+      "description": "Profile image URL"
+    }
+  ],
+  "permission": {
+    "type": "publicRead"
+  }
+}

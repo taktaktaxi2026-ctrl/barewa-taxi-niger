@@ -1,0 +1,26 @@
+{
+  "name": "BAREWA",
+  "description": "Barewa — la gazelle en haoussa. Commandez un taxi, un tricycle ou une berline partout au Niger, négociez le prix, suivez votre course en direct et payez en FCFA par mobile money ou en espèces.",
+  "destinations": [
+    {
+      "entryRoute": "/course",
+      "icon": "car-taxi-front",
+      "label": "Commander"
+    },
+    {
+      "entryRoute": "/chauffeur",
+      "icon": "gauge",
+      "label": "Chauffeur"
+    },
+    {
+      "entryRoute": "/admin",
+      "icon": "layout-dashboard",
+      "label": "Administration"
+    },
+    {
+      "entryRoute": "/assistant",
+      "agent": "BarewaAssistant"
+    }
+  ],
+  "isPublic": false
+}

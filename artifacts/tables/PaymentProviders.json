@@ -1,0 +1,63 @@
+{
+  "name": "PaymentProviders",
+  "description": "Référentiel des opérateurs de paiement partagé par les passagers, les chauffeurs et les paiements. Au Niger le mobile money se règle par code USSD composé sur le téléphone : ussdCode et ussdTemplate permettent à l'action InitiateMobileMoneyPayment de renvoyer au passager la chaîne exacte à composer, avec le numéro du marchand et le montant déjà insérés. Les codes sont en base et non dans le code afin que l'administrateur les corrige lui-même si un opérateur les change.",
+  "columns": [
+    {
+      "name": "kind",
+      "type": "string",
+      "description": "Nature du moyen de paiement",
+      "enum": [
+        "Mobile Money",
+        "Espèces"
+      ]
+    },
+    {
+      "name": "ussdCode",
+      "type": "string",
+      "description": "Code USSD principal de l'opérateur, composé par le passager sur son téléphone"
+    },
+    {
+      "name": "ussdTemplate",
+      "type": "string",
+      "description": "Modèle de chaîne USSD complète de transfert marchand. Les jetons {merchant} et {amount} sont remplacés à l'exécution."
+    },
+    {
+      "name": "brandColor",
+      "type": "string",
+      "description": "Couleur de marque de l'opérateur en hexadécimal, pour la pastille affichée dans le sélecteur"
+    },
+    {
+      "name": "merchantNumber",
+      "type": "string",
+      "description": "Numéro marchand BAREWA chez cet opérateur, destinataire des transferts"
+    },
+    {
+      "name": "instructions",
+      "type": "string",
+      "description": "Marche à suivre affichée au passager pour régler sa course avec cet opérateur"
+    },
+    {
+      "name": "requiresReference",
+      "type": "boolean",
+      "description": "Faut-il saisir la référence de transaction reçue par SMS pour confirmer le paiement"
+    },
+    {
+      "name": "sortOrder",
+      "type": "number",
+      "description": "Ordre d'affichage dans le sélecteur de paiement"
+    },
+    {
+      "name": "isActive",
+      "type": "boolean",
+      "description": "Ce moyen de paiement est-il proposé aux passagers"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Nom de l'opérateur ou du moyen de paiement tel qu'affiché"
+    }
+  ],
+  "permission": {
+    "type": "public"
+  }
+}

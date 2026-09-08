@@ -1,0 +1,105 @@
+{
+  "name": "PassengerProfile",
+  "description": "Entité d'extension du compte utilisateur pour la persona passager, référencée par email. preferredLanguage pilote la langue d'interface (Français, Haoussa, Zarma, Tamajaq) et preferredPaymentMethod pré-sélectionne le moyen de paiement à la commande. Créée paresseusement au premier enregistrement du profil : un passager fraîchement connecté peut ne pas encore avoir de ligne.",
+  "columns": [
+    {
+      "name": "email",
+      "type": "string",
+      "description": "Email du compte utilisateur du passager",
+      "reference": {
+        "table": "Users",
+        "column": "email",
+        "relationshipHint": "oneToOne"
+      }
+    },
+    {
+      "name": "fullName",
+      "type": "string",
+      "description": "Nom et prénom du passager"
+    },
+    {
+      "name": "phoneNumber",
+      "type": "string",
+      "description": "Numéro de téléphone au format international (+227...)"
+    },
+    {
+      "name": "whatsappNumber",
+      "type": "string",
+      "description": "Numéro WhatsApp du passager, s'il diffère du numéro d'appel"
+    },
+    {
+      "name": "profilePhotoUrl",
+      "type": "string",
+      "description": "Photo de profil du passager"
+    },
+    {
+      "name": "cityId",
+      "type": "number",
+      "description": "Ville habituelle du passager, utilisée pour centrer la carte à l'ouverture",
+      "reference": {
+        "table": "Cities",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "preferredLanguage",
+      "type": "string",
+      "description": "Langue d'interface préférée du passager",
+      "enum": [
+        "Français",
+        "Haoussa",
+        "Zarma",
+        "Tamajaq"
+      ]
+    },
+    {
+      "name": "preferredPaymentProviderId",
+      "type": "number",
+      "description": "Moyen de paiement pré-sélectionné lors de la commande",
+      "reference": {
+        "table": "PaymentProviders",
+        "column": "id",
+        "relationshipHint": "manyToOne"
+      }
+    },
+    {
+      "name": "mobileMoneyNumber",
+      "type": "string",
+      "description": "Numéro mobile money utilisé pour payer les courses"
+    },
+    {
+      "name": "rating",
+      "type": "number",
+      "description": "Note moyenne du passager attribuée par les chauffeurs, sur 5"
+    },
+    {
+      "name": "totalRides",
+      "type": "number",
+      "description": "Nombre total de courses effectuées"
+    },
+    {
+      "name": "totalSpent",
+      "type": "number",
+      "description": "Montant total dépensé en FCFA"
+    },
+    {
+      "name": "emergencyContactName",
+      "type": "string",
+      "description": "Nom du contact à prévenir en cas d'urgence pendant une course"
+    },
+    {
+      "name": "emergencyContactPhone",
+      "type": "string",
+      "description": "Numéro du contact d'urgence"
+    },
+    {
+      "name": "notes",
+      "type": "string",
+      "description": "Consignes récurrentes du passager pour les chauffeurs"
+    }
+  ],
+  "permission": {
+    "type": "public"
+  }
+}
